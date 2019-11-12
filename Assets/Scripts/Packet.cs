@@ -34,11 +34,10 @@ public class Packet : MonoBehaviour
     }
 
     private void ClearTransition() { transition = null; }
-    public void MoveTo(Vector2 anchoredPosition)
+    public void MoveTo(Vector2 anchoredPosition, System.Action<GameObject> endCallback = null)
     {
-        transition = StartCoroutine(Transition(transform as RectTransform, anchoredPosition, ClearTransition));
+        transition = StartCoroutine(Transition(transform as RectTransform, anchoredPosition, endCallback, ClearTransition));
     }
-
     Data _data;
     private Text _HeaderText, _BodyText;
     private Coroutine transition = null;
@@ -54,7 +53,7 @@ public class Packet : MonoBehaviour
     }
 
     public static float maxSpeed=1f;
-    public static IEnumerator Transition(RectTransform rectTransform, Vector2 targetPosition, System.Action onBreak = null)
+    public static IEnumerator Transition(RectTransform rectTransform, Vector2 targetPosition, System.Action<GameObject> onBreak = null, System.Action internalOnBreak = null)
     {
         while (true)
         {
@@ -64,7 +63,9 @@ public class Packet : MonoBehaviour
             {
                 rectTransform.anchoredPosition = targetPosition;
                 if (onBreak != null)
-                    onBreak();
+                    onBreak(rectTransform.gameObject);
+                if (internalOnBreak != null)
+                    internalOnBreak();
                 yield break;
             }
             else

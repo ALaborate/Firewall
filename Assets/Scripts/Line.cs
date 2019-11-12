@@ -28,7 +28,11 @@ public class Line : MonoBehaviour
         get { return signal.activeSelf; }
         set { signal.SetActive(value); }
     }
-
+    private void UtilizePacket(GameObject pgo)
+    {
+        packetPool.Add(pgo);
+        pgo.SetActive(false);
+    }
     public void CreatePacket(Packet.Data data)
     {
         if (busy) return;
@@ -65,11 +69,7 @@ public class Line : MonoBehaviour
             fp.onFire = true;
             Debug.Assert(!fp.onTheMove);
             showedPackets.RemoveAt(0);
-            StartCoroutine(Packet.Transition(fp.transform as RectTransform, exitPos, () =>
-            {
-                packetPool.Add(fp.gameObject);
-                fp.gameObject.SetActive(false);
-            }));
+            fp.MoveTo(exitPos, UtilizePacket);
             for (int i = 0; i < showedPackets.Count; i++)
             {
                 Debug.Assert(!showedPackets[i].onTheMove);
