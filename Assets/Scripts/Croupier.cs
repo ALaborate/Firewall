@@ -10,6 +10,7 @@ public class Croupier : MonoBehaviour
     public TextAsset vocabularyFile;
     public TextAsset headersFile;
     public float packetsPerSecond;
+    public float creationPeriod = 0.05f;
     public GameObject linePrefab;
 
     [Header("Bufer handling")]
@@ -59,13 +60,16 @@ public class Croupier : MonoBehaviour
         headers = (from s in headersFile.text.Split('\n', '\r', ' ') where !string.IsNullOrEmpty(s) select s).ToArray();
     }
 
-    // Update is called once per frame
+    private float nextCreationTime = 0f;
     void Update()
     {
-        var freeLines = (from l in lines where !l.busy select l).ToList();
+        if (Time.time < nextCreationTime)
+            return;
+        var freeLines = (from l in lines where l!=null && !l.busy select l).ToList();
         if (freeLines.Count == 0) return;
 
-        var probability = packetsPerSecond * Time.deltaTime;
+        var probability = packetsPerSecond * creationPeriod;
+        nextCreationTime = Time.time + creationPeriod;
         if(Random.value<=probability)
         {
             var lineInx = Mathf.FloorToInt(Random.Range(0f, freeLines.Count));

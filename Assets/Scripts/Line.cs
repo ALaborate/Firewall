@@ -15,16 +15,36 @@ public class Line : MonoBehaviour
     public float maxPacketSpeed;
 
     #region publicAPI
-    public bool busy { get { return insertion!=null; } }
+    public bool busy
+    {
+        get
+        {
+            return profiles.Count >= anchoredPacketPositions.Count && profiles[profiles.Count - 1].transition != null;
+        }
+    }
     public bool showSignal
     {
         get { return signal.activeSelf; }
         set { signal.SetActive(value); }
     }
 
+    public struct PacketProfile
+    {
+        public Packet packet;
+        public Coroutine transition { get; set; }
+        public Vector2 targetPosition;
+        public PacketProfile(Packet packet, Coroutine transition, Vector2 targetPosition)
+        {
+            this.packet = packet;
+            this.transition = transition;
+            this.targetPosition = targetPosition;
+        }
+
+    }
 
     public void CreatePacket(Packet.Data data)
     {
+        if (busy) return;
         GameObject pgo = null;
         if (packetPool.Count == 0)
         {
@@ -47,32 +67,49 @@ public class Line : MonoBehaviour
         prt.anchorMin = vHalf;
         prt.anchorMax = vHalf;
         prt.anchoredPosition = enterPos;
-        if (showedPackets.Count == anchoredPacketPositions.Count)
+        bool pushingBlock = profiles.Count == anchoredPacketPositions.Count;
+
+        PacketProfile prof;
+        if (pushingBlock)
         {
-            var fp = showedPackets[0].GetComponent<Packet>();
+            var fp = profiles[0].packet;
             fp.onFire = true;
 
-            showedPackets.RemoveAt(0);
+            profiles.RemoveAt(0);
             StartCoroutine(Transition(fp.transform as RectTransform, exitPos, maxPacketSpeed, () =>
             {
                 packetPool.Add(fp.gameObject);
                 fp.gameObject.SetActive(false);
             }));
-            for (int i = 0; i < showedPackets.Count; i++)
+            for (int i = 0; i < profiles.Count; i++)
             {
-                StartCoroutine(Transition(showedPackets[i].transform as RectTransform, anchoredPacketPositions[i], maxPacketSpeed));
+                prof = profiles[i];
+                Debug.Assert(prof.transition == null);
+                prof.transition = StartCoroutine(Transition(profiles[i].packet.transform as RectTransform, anchoredPacketPositions[i], maxPacketSpeed, () =>
+                {
+                    var lambdaProf = profiles[i];
+                    lambdaProf.transition = null;
+                    profiles[i] = lambdaProf;
+                }));
+                profiles[i] = prof;
             }
-        }
 
-        insertion = StartCoroutine(Transition(prt, anchoredPacketPositions[showedPackets.Count], maxPacketSpeed, () => { insertion = null; }));
-        showedPackets.Add(pgo);
+        }
+        prof = new PacketProfile(p, null, anchoredPacketPositions[profiles.Count]);
+        var inx = profiles.Count;
+        prof.transition = StartCoroutine(Transition(prt, anchoredPacketPositions[inx], maxPacketSpeed, () =>
+        {
+            var b = profiles[inx];
+            b.transition = null;
+            profiles[inx] = b;
+        }));
+        profiles.Add(prof);
     }
     #endregion
-
-    Coroutine insertion = null;
     List<Vector2> anchoredPacketPositions;
-    List<GameObject> showedPackets;
+    //List<GameObject> showedPackets;
     List<GameObject> packetPool;
+    List<PacketProfile> profiles;
     RectTransform rt;
     Vector2 enterPos, exitPos;
 
@@ -122,8 +159,8 @@ public class Line : MonoBehaviour
     private void Awake()
     {
         signal = transform.GetChild(0).gameObject;
+        profiles = new List<PacketProfile>();
         anchoredPacketPositions = new List<Vector2>();
         packetPool = new List<GameObject>();
-        showedPackets = new List<GameObject>();
     }
 }
