@@ -96,12 +96,12 @@ public class Line : MonoBehaviour
 
         Vector2 initialPosition = new Vector2(-parentrt.rect.width + (rt.rect.width + prt.rect.width) * 0.5f + paddingLeft, 0f);
         var limit = -(prt.rect.width + rt.rect.width) * 0.5f - packetPadding;
-        Debug.DrawLine(Vector3.zero, rt.position + new Vector3(limit, 0f) * transform.root.localScale.x, Color.green, float.PositiveInfinity);
+        //Debug.DrawLine(Vector3.zero, rt.position + new Vector3(limit, 0f) * transform.root.localScale.x, Color.green, float.PositiveInfinity);
         int i = 0;
         while (true)
         {
             var pos = new Vector2(initialPosition.x + i++ * (prt.rect.width + packetPadding), initialPosition.y);
-            Debug.DrawLine(Vector3.zero, rt.position + new Vector3(pos.x, 0f) * transform.root.localScale.x, Color.red, float.PositiveInfinity);
+            //Debug.DrawLine(Vector3.zero, rt.position + new Vector3(pos.x, 0f) * transform.root.localScale.x, Color.red, float.PositiveInfinity);
             if (pos.x > limit)
                 break;
             anchoredPacketPositions.Add(pos);
