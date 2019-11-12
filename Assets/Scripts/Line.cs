@@ -12,14 +12,15 @@ public class Line : MonoBehaviour
     [Header("Calculated programmatically")]
     public GameObject signal;
     //public int capacity;
-    public float maxPacketSpeed;
+    //public float maxPacketSpeed;
 
     #region publicAPI
     public bool busy
     {
         get
         {
-            return profiles.Count >= anchoredPacketPositions.Count && profiles[profiles.Count - 1].transition != null;
+            var r = Time.time <= nextTimeToCreate || (showedPackets.Count >= anchoredPacketPositions.Count && showedPackets[showedPackets.Count - 1].onTheMove);
+            return r;
         }
     }
     public bool showSignal
@@ -28,23 +29,11 @@ public class Line : MonoBehaviour
         set { signal.SetActive(value); }
     }
 
-    public struct PacketProfile
-    {
-        public Packet packet;
-        public Coroutine transition { get; set; }
-        public Vector2 targetPosition;
-        public PacketProfile(Packet packet, Coroutine transition, Vector2 targetPosition)
-        {
-            this.packet = packet;
-            this.transition = transition;
-            this.targetPosition = targetPosition;
-        }
-
-    }
-
     public void CreatePacket(Packet.Data data)
     {
         if (busy) return;
+        nextTimeToCreate = Time.time + creationPeriod;
+
         GameObject pgo = null;
         if (packetPool.Count == 0)
         {
@@ -67,49 +56,35 @@ public class Line : MonoBehaviour
         prt.anchorMin = vHalf;
         prt.anchorMax = vHalf;
         prt.anchoredPosition = enterPos;
-        bool pushingBlock = profiles.Count == anchoredPacketPositions.Count;
+        bool pushingBlock = showedPackets.Count >= anchoredPacketPositions.Count;
+        bool lastBlock = showedPackets.Count >= anchoredPacketPositions.Count - 1;
 
-        PacketProfile prof;
         if (pushingBlock)
         {
-            var fp = profiles[0].packet;
+            var fp = showedPackets[0];
             fp.onFire = true;
-
-            profiles.RemoveAt(0);
-            StartCoroutine(Transition(fp.transform as RectTransform, exitPos, maxPacketSpeed, () =>
+            Debug.Assert(!fp.onTheMove);
+            showedPackets.RemoveAt(0);
+            StartCoroutine(Packet.Transition(fp.transform as RectTransform, exitPos, () =>
             {
                 packetPool.Add(fp.gameObject);
                 fp.gameObject.SetActive(false);
             }));
-            for (int i = 0; i < profiles.Count; i++)
+            for (int i = 0; i < showedPackets.Count; i++)
             {
-                prof = profiles[i];
-                Debug.Assert(prof.transition == null);
-                prof.transition = StartCoroutine(Transition(profiles[i].packet.transform as RectTransform, anchoredPacketPositions[i], maxPacketSpeed, () =>
-                {
-                    var lambdaProf = profiles[i];
-                    lambdaProf.transition = null;
-                    profiles[i] = lambdaProf;
-                }));
-                profiles[i] = prof;
+                Debug.Assert(!showedPackets[i].onTheMove);
+                showedPackets[i].MoveTo(anchoredPacketPositions[i]);
             }
-
         }
-        prof = new PacketProfile(p, null, anchoredPacketPositions[profiles.Count]);
-        var inx = profiles.Count;
-        prof.transition = StartCoroutine(Transition(prt, anchoredPacketPositions[inx], maxPacketSpeed, () =>
-        {
-            var b = profiles[inx];
-            b.transition = null;
-            profiles[inx] = b;
-        }));
-        profiles.Add(prof);
+
+        p.MoveTo(anchoredPacketPositions[showedPackets.Count]);
+        showedPackets.Add(p);
     }
     #endregion
+    float nextTimeToCreate = -3f, creationPeriod = 1f;
     List<Vector2> anchoredPacketPositions;
-    //List<GameObject> showedPackets;
+    List<Packet> showedPackets;
     List<GameObject> packetPool;
-    List<PacketProfile> profiles;
     RectTransform rt;
     Vector2 enterPos, exitPos;
 
@@ -121,46 +96,34 @@ public class Line : MonoBehaviour
 
         Vector2 initialPosition = new Vector2(-parentrt.rect.width + (rt.rect.width + prt.rect.width) * 0.5f + paddingLeft, 0f);
         var limit = -(prt.rect.width + rt.rect.width) * 0.5f - packetPadding;
-        //Debug.DrawLine(Vector3.zero, rt.position + new Vector3(limit, 0f)*transform.root.localScale.x, Color.green, float.PositiveInfinity);
+        Debug.DrawLine(Vector3.zero, rt.position + new Vector3(limit, 0f) * transform.root.localScale.x, Color.green, float.PositiveInfinity);
         int i = 0;
         while (true)
         {
             var pos = new Vector2(initialPosition.x + i++ * (prt.rect.width + packetPadding), initialPosition.y);
-            //Debug.DrawLine(Vector3.zero, rt.position + new Vector3(pos.x, 0f) * transform.root.localScale.x, Color.red, float.PositiveInfinity);
+            Debug.DrawLine(Vector3.zero, rt.position + new Vector3(pos.x, 0f) * transform.root.localScale.x, Color.red, float.PositiveInfinity);
             if (pos.x > limit)
                 break;
             anchoredPacketPositions.Add(pos);
         }
         enterPos = new Vector2(prt.rect.width * 0.7f, 0f);
         exitPos = new Vector2(-parentrt.rect.width, 0f);
+        
+        creationPeriod = (prt.rect.width+2*packetPadding) / Packet.maxSpeed;
     }
 
-    public IEnumerator Transition(RectTransform rectTransform, Vector2 targetPosition, float maxSpeed, System.Action onBreak = null)
-    {
-        while (true)
-        {
-            var change = targetPosition - rectTransform.anchoredPosition;
-            var maxChange = change.normalized * maxSpeed * Time.deltaTime;
-            if (change.sqrMagnitude <= maxChange.sqrMagnitude)
-            {
-                rectTransform.anchoredPosition = targetPosition;
-                if (onBreak != null)
-                    onBreak();
-                yield break;
-            }
-            else
-            {
-                rectTransform.anchoredPosition += maxChange;
-                yield return null;
-            }
-        }
-    }
+
 
     private void Awake()
     {
         signal = transform.GetChild(0).gameObject;
-        profiles = new List<PacketProfile>();
+        showedPackets = new List<Packet>();
         anchoredPacketPositions = new List<Vector2>();
         packetPool = new List<GameObject>();
+    }
+
+    public override string ToString()
+    {
+        return $"{nameof(Line)} {showedPackets.Count}";
     }
 }

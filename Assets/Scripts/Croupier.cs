@@ -33,12 +33,12 @@ public class Croupier : MonoBehaviour
         var lrt = linePrefab.transform as RectTransform;
         var padding = (verticalPadding + relativeVerticalPadding * rt.rect.height);
 
-        int linesCount = Mathf.FloorToInt((rt.rect.height - padding * 2 )
-            / lrt.rect.height);
+        //int linesCount = 1;
+        int linesCount = Mathf.FloorToInt((rt.rect.height - padding * 2) / lrt.rect.height);
         lines = new Line[linesCount];
 
         //lineCapacity = Mathf.FloorToInt((rt.rect.width - paddingLeft - paddingRight) / lrt.rect.width);
-        float lineSpeed = rt.rect.width / screenCrossingTime;
+        Packet.maxSpeed = rt.rect.width / screenCrossingTime;
         for (int i = 0; i < lines.Length; i++)
         {
             var l = Instantiate(linePrefab);
@@ -53,7 +53,7 @@ public class Croupier : MonoBehaviour
             lrt.anchoredPosition = new Vector2(-w * 0.5f, -padding - h * 0.5f - h * i);
             lines[i].showSignal = false;
             //lines[i].capacity = lineCapacity;
-            lines[i].maxPacketSpeed = lineSpeed;
+            //lines[i].maxPacketSpeed = lineSpeed;
             //Debug.DrawLine(Vector3.zero, lrt.position, Color.magenta, float.PositiveInfinity);
         }
         vocabulary = (from s in vocabularyFile.text.Split('\n', '\r', ' ') where !string.IsNullOrEmpty(s) select s).ToArray();
@@ -65,12 +65,12 @@ public class Croupier : MonoBehaviour
     {
         if (Time.time < nextCreationTime)
             return;
-        var freeLines = (from l in lines where l!=null && !l.busy select l).ToList();
+        var freeLines = (from l in lines where l != null && !l.busy select l).ToList();
         if (freeLines.Count == 0) return;
 
         var probability = packetsPerSecond * creationPeriod;
         nextCreationTime = Time.time + creationPeriod;
-        if(Random.value<=probability)
+        if (Random.value <= probability)
         {
             var lineInx = Mathf.FloorToInt(Random.Range(0f, freeLines.Count));
             var headerInx = Mathf.FloorToInt(Random.Range(0f, headers.Length));
