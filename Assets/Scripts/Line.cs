@@ -107,7 +107,7 @@ public class Line : MonoBehaviour
             anchoredPacketPositions.Add(pos);
         }
         enterPos = new Vector2(prt.rect.width * 0.7f, 0f);
-        exitPos = new Vector2(-parentrt.rect.width, 0f);
+        exitPos = new Vector2(-parentrt.rect.width - prt.rect.width, 0f);
         
         creationPeriod = (prt.rect.width+2*packetPadding) / Packet.maxSpeed;
     }
