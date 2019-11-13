@@ -20,6 +20,9 @@ public class Croupier : MonoBehaviour
     public float relativeVerticalPadding = 0.1f;
     public float screenCrossingTime = 3f;
 
+    [Header("Typing")]
+    public InputField field;
+
     RectTransform rt;
     Line[] lines;
     string[] gHeaders, vocabulary, bHeaders;
@@ -54,10 +57,12 @@ public class Croupier : MonoBehaviour
         vocabulary = ParseTextAsset(vocabularyFile);
         gHeaders = ParseTextAsset(goodHeadersFile);
         bHeaders = ParseTextAsset(badHeadersFile);
+
+        //TODO set up drop process
     }
 
     private float nextCreationTime = 0f;
-    void Update()
+    private void CreatePackets()
     {
         if (Time.time < nextCreationTime)
             return;
@@ -76,5 +81,11 @@ public class Croupier : MonoBehaviour
 
             freeLines[lineInx].CreatePacket(new Packet.Data(h, vocabulary[wordInx], goodPacket));
         }
+    }
+    void Update()
+    {
+        CreatePackets();
+
+        // TODO Clear packets
     }
 }
