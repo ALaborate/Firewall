@@ -90,6 +90,7 @@
 <node CREATED="1573675341186" ID="ID_215756621" MODIFIED="1573675373881" TEXT="Ability to adjust quantity of lines"/>
 </node>
 <node CREATED="1573675374328" ID="ID_1725474933" MODIFIED="1573675406323" TEXT="Ability to influence good/bad ratio"/>
+<node CREATED="1573675687157" ID="ID_619746553" MODIFIED="1573675704299" TEXT="Sometimes, there is one word for good and bad at the same time"/>
 <node CREATED="1573675645060" ID="ID_1445432255" MODIFIED="1573675651306" TEXT="Take out commas"/>
 <node CREATED="1573675457162" ID="ID_424713293" MODIFIED="1573675477116" TEXT="Packet glitches">
 <node CREATED="1573675478112" ID="ID_169692474" MODIFIED="1573675488504" TEXT="Try to moove them in fixed update"/>
