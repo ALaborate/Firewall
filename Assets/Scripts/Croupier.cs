@@ -53,12 +53,38 @@ public class Croupier : MonoBehaviour
             lrt.anchorMin = Vector2.one;
             lrt.anchorMax = Vector2.one;
             lrt.anchoredPosition = new Vector2(-w * 0.5f, -padding - h * 0.5f - h * i);
+            lines[i].OnPacketClear += OnPacketClear;
+            lines[i].OnPacketDrop += OnPacketDrop;
         }
         vocabulary = ParseTextAsset(vocabularyFile);
         gHeaders = ParseTextAsset(goodHeadersFile);
         bHeaders = ParseTextAsset(badHeadersFile);
-
-        //TODO set up drop process
+    }
+    private void OnPacketClear(Packet p)
+    {
+        var data = p.data;
+        if (gHeaders.Contains(data.header))
+        {
+            //TODO accelerate
+        }
+        else if (bHeaders.Contains(data.header))
+        {
+            //TODO decelerate
+        }
+        else Debug.LogError($"Packet header {data.header} is not contained");
+    }
+    private void OnPacketDrop(Packet p)
+    {
+        var data = p.data;
+        if (gHeaders.Contains(data.header))
+        {
+            //TODO decelerate
+        }
+        else if (bHeaders.Contains(data.header))
+        {
+            //TODO accelerate
+        }
+        else Debug.LogError($"Packet header {data.header} is not contained");
     }
 
     private float nextCreationTime = 0f;
@@ -86,6 +112,19 @@ public class Croupier : MonoBehaviour
     {
         CreatePackets();
 
-        // TODO Clear packets
+        if (Input.anyKeyDown && UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject != field.gameObject)
+            field.Select();
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            var s = field.text.Trim();
+            var occurences = 0;
+            foreach (var line in lines)
+            {
+                occurences += line.ClearPackets(s);
+            }
+            field.text = "";
+            field.Select();
+        }
     }
 }

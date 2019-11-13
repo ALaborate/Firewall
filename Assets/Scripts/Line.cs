@@ -8,8 +8,8 @@ public interface ILine
     bool busy { get; }
     bool showSignal { get; }
 
-    event System.Action<Packet.Data> OnPacketDrop;
-    event System.Action<Packet.Data> OnPacketClear;
+    event System.Action<Packet> OnPacketDrop;
+    event System.Action<Packet> OnPacketClear;
     void CreatePacket(Packet.Data data);
     int ClearPackets(string bodyContent);
     string ToString();
@@ -77,7 +77,7 @@ public class Line : MonoBehaviour, ILine
         if (pushingBlock)
         {
             var fp = showedPackets[0];
-            OnPacketDrop?.Invoke(fp.data);
+            OnPacketDrop?.Invoke(fp);
             fp.onFire = true;
             Debug.Assert(!fp.onTheMove);
             showedPackets.RemoveAt(0);
@@ -108,7 +108,7 @@ public class Line : MonoBehaviour, ILine
         {
             if (showedPackets[i].data.body == bodyContent)
             {
-                OnPacketClear?.Invoke(showedPackets[i].data);
+                OnPacketClear?.Invoke(showedPackets[i]);
                 ClearPacket(showedPackets[i]);
                 showedPackets.RemoveAt(i--);
                 c++;
@@ -119,8 +119,8 @@ public class Line : MonoBehaviour, ILine
         return c;
     }
 
-    public event System.Action<Packet.Data> OnPacketDrop;
-    public event System.Action<Packet.Data> OnPacketClear;
+    public event System.Action<Packet> OnPacketDrop;
+    public event System.Action<Packet> OnPacketClear;
     #endregion
     float nextTimeToCreate = -3f, creationPeriod = 1f;
     List<Vector2> anchoredPacketPositions;
