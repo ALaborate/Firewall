@@ -149,7 +149,7 @@ public class Line : MonoBehaviour, ILine
         enterPos = new Vector2(prt.rect.width, 0f);
         exitPos = new Vector2(-parentrt.rect.width - prt.rect.width, 0f);
 
-        creationPeriod = (prt.rect.width + 2 * packetPadding) / Packet.maxSpeed;
+        creationPeriod = (prt.rect.width * 1.5f) / Packet.maxSpeed;
         showSignal = false;
     }
 
