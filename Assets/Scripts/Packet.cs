@@ -36,6 +36,8 @@ public class Packet : MonoBehaviour
     private void ClearTransition() { transition = null; }
     public void MoveTo(Vector2 anchoredPosition, System.Action<GameObject> endCallback = null)
     {
+        if (onTheMove)
+            StopCoroutine(transition);
         transition = StartCoroutine(Transition(transform as RectTransform, anchoredPosition, endCallback, ClearTransition));
     }
     Data _data;
