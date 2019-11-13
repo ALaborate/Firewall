@@ -90,7 +90,7 @@ public class Croupier : MonoBehaviour
         }
         else if (bHeaders.Contains(data.header))
         {
-            Accelerate();
+            //Accelerate(); //sic! no reaction to drop bad packets
         }
         else Debug.LogError($"Packet header {data.header} is not contained");
     }
