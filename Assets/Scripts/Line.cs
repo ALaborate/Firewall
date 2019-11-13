@@ -11,8 +11,6 @@ public class Line : MonoBehaviour
     public float packetPadding = 10f;
     [Header("Calculated programmatically")]
     public GameObject signal;
-    //public int capacity;
-    //public float maxPacketSpeed;
 
     #region publicAPI
     public bool busy
@@ -96,7 +94,6 @@ public class Line : MonoBehaviour
 
         Vector2 initialPosition = new Vector2(-parentrt.rect.width + (rt.rect.width + prt.rect.width) * 0.5f + paddingLeft, 0f);
         var limit = -(prt.rect.width + rt.rect.width) * 0.5f - packetPadding;
-        //Debug.DrawLine(Vector3.zero, rt.position + new Vector3(limit, 0f) * transform.root.localScale.x, Color.green, float.PositiveInfinity);
         int i = 0;
         while (true)
         {
@@ -111,8 +108,6 @@ public class Line : MonoBehaviour
         
         creationPeriod = (prt.rect.width+2*packetPadding) / Packet.maxSpeed;
     }
-
-
 
     private void Awake()
     {
