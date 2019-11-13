@@ -13,6 +13,8 @@ public class Croupier : MonoBehaviour
 
     public float packetsPerSecond;
     public float creationPeriod = 0.05f;
+    public float goodBadWordsScrumblePeriod = 20f;
+    public float intensityAcceleration = 0.1f;
     public GameObject linePrefab;
 
     [Header("Bufer handling")]
@@ -28,7 +30,10 @@ public class Croupier : MonoBehaviour
     string[] gHeaders, vocabulary, bHeaders;
     private string[] ParseTextAsset(TextAsset textAsset)
     {
-        return (from s in textAsset.text.Split('\n', '\r', ' ') where !string.IsNullOrEmpty(s) select s).ToArray();
+        bws.Clear();
+        var ret = (from s in textAsset.text.Split('\n', '\r', ' ') where !string.IsNullOrEmpty(s) && bws.Add(s) select s).ToArray();
+        bws.Clear();
+        return ret;
     }
     void Start()
     {
@@ -59,17 +64,20 @@ public class Croupier : MonoBehaviour
         vocabulary = ParseTextAsset(vocabularyFile);
         gHeaders = ParseTextAsset(goodHeadersFile);
         bHeaders = ParseTextAsset(badHeadersFile);
+        gWords = new List<string>();
+        bWords = new List<string>();
+        ScrumbleWords();
     }
     private void OnPacketClear(Packet p)
     {
         var data = p.data;
         if (gHeaders.Contains(data.header))
         {
-            //TODO accelerate
+            Accelerate();
         }
         else if (bHeaders.Contains(data.header))
         {
-            //TODO decelerate
+            Decelerate();
         }
         else Debug.LogError($"Packet header {data.header} is not contained");
     }
@@ -78,13 +86,24 @@ public class Croupier : MonoBehaviour
         var data = p.data;
         if (gHeaders.Contains(data.header))
         {
-            //TODO decelerate
+            Decelerate();
         }
         else if (bHeaders.Contains(data.header))
         {
-            //TODO accelerate
+            Accelerate();
         }
         else Debug.LogError($"Packet header {data.header} is not contained");
+    }
+    private void Accelerate()
+    {
+        packetsPerSecond += intensityAcceleration;
+    }
+    private void Decelerate()
+    {
+        if (packetsPerSecond >= 2f * intensityAcceleration)
+        {
+            packetsPerSecond -= intensityAcceleration;
+        }
     }
 
     private float nextCreationTime = 0f;
@@ -101,16 +120,57 @@ public class Croupier : MonoBehaviour
         {
             var lineInx = Mathf.FloorToInt(Random.Range(0f, freeLines.Count));
             var headerInx = Mathf.FloorToInt(Random.Range(0f, gHeaders.Length + bHeaders.Length));
-            var wordInx = Mathf.FloorToInt(Random.Range(0f, vocabulary.Length));
+            
             bool goodPacket = headerInx < gHeaders.Length;
+            var wordInx = Mathf.FloorToInt(Random.Range(0f, goodPacket?gWords.Count:bWords.Count));
             string h = !goodPacket ? bHeaders[headerInx % bHeaders.Length] : gHeaders[headerInx];
-
-            freeLines[lineInx].CreatePacket(new Packet.Data(h, vocabulary[wordInx], goodPacket));
+            string w = goodPacket ? gWords[wordInx] : bWords[wordInx];
+            freeLines[lineInx].CreatePacket(new Packet.Data(h, w, goodPacket));
         }
     }
+
+    private List<string> gWords, bWords;
+    HashSet<string> bws = new HashSet<string>(System.StringComparer.Ordinal);
+    private float nextScrumbleTime = -1f;
+    private void AddWord(string word, bool reportedlyGood)
+    {
+        if (reportedlyGood && !bws.Contains(word))
+            gWords.Add(word);
+        else if (!bws.Contains(word))
+        {
+            bWords.Add(word);
+            bws.Add(word);
+        }
+    }
+    private void ScrumbleWords()
+    {
+        if (Time.time < nextScrumbleTime)
+            return;
+        nextScrumbleTime = Time.time + goodBadWordsScrumblePeriod;
+        float gRatio = gHeaders.Length / (float)(gHeaders.Length + bHeaders.Length);
+
+        gWords.Clear();
+        bWords.Clear();
+        bws.Clear();
+        foreach (var line in lines)
+        {
+            foreach (var pack in line.packets)
+            {
+                AddWord(pack.data.body, pack.data.good);
+            }
+        }
+
+        foreach (var word in vocabulary)
+        {
+            AddWord(word, Random.value <= gRatio);
+        }
+    }
+
     void Update()
     {
         CreatePackets();
+
+        ScrumbleWords();
 
         if (Input.anyKeyDown && UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject != field.gameObject)
             field.Select();

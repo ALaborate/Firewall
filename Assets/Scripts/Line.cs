@@ -89,6 +89,7 @@ public class Line : MonoBehaviour, ILine
         p.MoveTo(anchoredPacketPositions[showedPackets.Count]);
         showedPackets.Add(p);
     }
+    public IReadOnlyList<Packet> packets { get { return showedPackets; } }
 
     private void PlacePackets()
     {

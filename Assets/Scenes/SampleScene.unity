@@ -275,11 +275,13 @@ MonoBehaviour:
   badHeadersFile: {fileID: 4900000, guid: d6e266a1007c4334ca3d52c72cb926bc, type: 3}
   packetsPerSecond: 2
   creationPeriod: 0.05
+  intensityAcceleration: 0.1
   linePrefab: {fileID: 5721813386558704021, guid: 532b0ee70683207449eb1e805d28e4b1,
     type: 3}
   verticalPadding: 0
   relativeVerticalPadding: 0.03
   screenCrossingTime: 6
+  field: {fileID: 1955324048}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
