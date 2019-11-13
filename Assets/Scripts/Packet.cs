@@ -79,7 +79,7 @@ public class Packet : MonoBehaviour
     }
 
     [System.Serializable]
-    public class Data
+    public struct Data
     {
         public string header;
         public string body;
