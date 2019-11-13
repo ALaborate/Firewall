@@ -3,8 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+public interface ILine
+{
+    bool busy { get; }
+    bool showSignal { get; }
 
-public class Line : MonoBehaviour
+    event System.Action<Packet.Data> OnPacketDrop;
+    event System.Action<Packet.Data> OnPacketClear;
+    void CreatePacket(Packet.Data data);
+    int ClearPackets(string bodyContent);
+    string ToString();
+}
+
+public class Line : MonoBehaviour, ILine
 {
     public GameObject packetPrefab;
     public float paddingLeft = 70f;
@@ -24,7 +35,7 @@ public class Line : MonoBehaviour
     public bool showSignal
     {
         get { return signal.activeSelf; }
-        set { signal.SetActive(value); }
+        private set { signal.SetActive(value); }
     }
     private void UtilizePacket(GameObject pgo)
     {
@@ -66,20 +77,50 @@ public class Line : MonoBehaviour
         if (pushingBlock)
         {
             var fp = showedPackets[0];
+            OnPacketDrop?.Invoke(fp.data);
             fp.onFire = true;
             Debug.Assert(!fp.onTheMove);
             showedPackets.RemoveAt(0);
+            //TODO add fp to onFirePackets list
             fp.MoveTo(exitPos, UtilizePacket);
-            for (int i = 0; i < showedPackets.Count; i++)
-            {
-                Debug.Assert(!showedPackets[i].onTheMove);
-                showedPackets[i].MoveTo(anchoredPacketPositions[i]);
-            }
+            PlacePackets();
         }
 
         p.MoveTo(anchoredPacketPositions[showedPackets.Count]);
         showedPackets.Add(p);
     }
+
+    private void PlacePackets()
+    {
+        for (int i = 0; i < showedPackets.Count; i++)
+        {
+            showedPackets[i].MoveTo(anchoredPacketPositions[i]);
+        }
+    }
+    private void ClearPacket(Packet p)
+    {
+        UtilizePacket(p.gameObject);
+    }
+    public int ClearPackets(string bodyContent)
+    {
+        int c = 0;
+        for(int i=0; i<showedPackets.Count; i++)
+        {
+            if (showedPackets[i].data.body == bodyContent)
+            {
+                OnPacketClear?.Invoke(showedPackets[i].data);
+                ClearPacket(showedPackets[i]);
+                showedPackets.RemoveAt(i--);
+                c++;
+            }
+        }
+        PlacePackets();
+        //TODO check onFIre packet
+        return c;
+    }
+
+    public event System.Action<Packet.Data> OnPacketDrop;
+    public event System.Action<Packet.Data> OnPacketClear;
     #endregion
     float nextTimeToCreate = -3f, creationPeriod = 1f;
     List<Vector2> anchoredPacketPositions;
@@ -107,8 +148,9 @@ public class Line : MonoBehaviour
         }
         enterPos = new Vector2(prt.rect.width, 0f);
         exitPos = new Vector2(-parentrt.rect.width - prt.rect.width, 0f);
-        
-        creationPeriod = (prt.rect.width+2*packetPadding) / Packet.maxSpeed;
+
+        creationPeriod = (prt.rect.width + 2 * packetPadding) / Packet.maxSpeed;
+        showSignal = false;
     }
 
     private void Awake()

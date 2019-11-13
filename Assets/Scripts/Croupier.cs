@@ -50,7 +50,6 @@ public class Croupier : MonoBehaviour
             lrt.anchorMin = Vector2.one;
             lrt.anchorMax = Vector2.one;
             lrt.anchoredPosition = new Vector2(-w * 0.5f, -padding - h * 0.5f - h * i);
-            lines[i].showSignal = false;
         }
         vocabulary = ParseTextAsset(vocabularyFile);
         gHeaders = ParseTextAsset(goodHeadersFile);
@@ -70,7 +69,7 @@ public class Croupier : MonoBehaviour
         if (Random.value <= probability)
         {
             var lineInx = Mathf.FloorToInt(Random.Range(0f, freeLines.Count));
-            var headerInx = Mathf.FloorToInt(Random.Range(0f, gHeaders.Length+bHeaders.Length));
+            var headerInx = Mathf.FloorToInt(Random.Range(0f, gHeaders.Length + bHeaders.Length));
             var wordInx = Mathf.FloorToInt(Random.Range(0f, vocabulary.Length));
             bool goodPacket = headerInx < gHeaders.Length;
             string h = !goodPacket ? bHeaders[headerInx % bHeaders.Length] : gHeaders[headerInx];
