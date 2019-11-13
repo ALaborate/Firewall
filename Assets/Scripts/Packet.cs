@@ -83,10 +83,12 @@ public class Packet : MonoBehaviour
     {
         public string header;
         public string body;
-        public Data(string _header, string _body)
+        public readonly bool good;
+        public Data(string _header, string _body, bool _good)
         {
             header = _header;
             body = _body;
+            good = _good;
         }
     }
     public override string ToString()

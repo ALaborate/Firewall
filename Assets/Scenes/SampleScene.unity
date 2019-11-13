@@ -271,7 +271,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vocabularyFile: {fileID: 4900000, guid: 34790208db73ceb43a4ec90f82af9025, type: 3}
-  headersFile: {fileID: 4900000, guid: b48ab3da7a1074d408062da1da1c0c72, type: 3}
+  goodHeadersFile: {fileID: 4900000, guid: 7866eeb46e57aeb4e9f33a100c6bfef0, type: 3}
+  badHeadersFile: {fileID: 4900000, guid: d6e266a1007c4334ca3d52c72cb926bc, type: 3}
   packetsPerSecond: 8
   creationPeriod: 0.05
   linePrefab: {fileID: 5721813386558704021, guid: 532b0ee70683207449eb1e805d28e4b1,

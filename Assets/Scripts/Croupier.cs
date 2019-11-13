@@ -8,7 +8,9 @@ public class Croupier : MonoBehaviour
 {
     [Header("Packet creation")]
     public TextAsset vocabularyFile;
-    public TextAsset headersFile;
+    public TextAsset goodHeadersFile;
+    public TextAsset badHeadersFile;
+
     public float packetsPerSecond;
     public float creationPeriod = 0.05f;
     public GameObject linePrefab;
@@ -18,11 +20,13 @@ public class Croupier : MonoBehaviour
     public float relativeVerticalPadding = 0.1f;
     public float screenCrossingTime = 3f;
 
-
     RectTransform rt;
     Line[] lines;
-    string[] headers, vocabulary;
-
+    string[] gHeaders, vocabulary, bHeaders;
+    private string[] ParseTextAsset(TextAsset textAsset)
+    {
+        return (from s in textAsset.text.Split('\n', '\r', ' ') where !string.IsNullOrEmpty(s) select s).ToArray();
+    }
     void Start()
     {
         rt = transform as RectTransform;
@@ -48,8 +52,9 @@ public class Croupier : MonoBehaviour
             lrt.anchoredPosition = new Vector2(-w * 0.5f, -padding - h * 0.5f - h * i);
             lines[i].showSignal = false;
         }
-        vocabulary = (from s in vocabularyFile.text.Split('\n', '\r', ' ') where !string.IsNullOrEmpty(s) select s).ToArray();
-        headers = (from s in headersFile.text.Split('\n', '\r', ' ') where !string.IsNullOrEmpty(s) select s).ToArray();
+        vocabulary = ParseTextAsset(vocabularyFile);
+        gHeaders = ParseTextAsset(goodHeadersFile);
+        bHeaders = ParseTextAsset(badHeadersFile);
     }
 
     private float nextCreationTime = 0f;
@@ -65,10 +70,12 @@ public class Croupier : MonoBehaviour
         if (Random.value <= probability)
         {
             var lineInx = Mathf.FloorToInt(Random.Range(0f, freeLines.Count));
-            var headerInx = Mathf.FloorToInt(Random.Range(0f, headers.Length));
+            var headerInx = Mathf.FloorToInt(Random.Range(0f, gHeaders.Length+bHeaders.Length));
             var wordInx = Mathf.FloorToInt(Random.Range(0f, vocabulary.Length));
+            bool goodPacket = headerInx < gHeaders.Length;
+            string h = !goodPacket ? bHeaders[headerInx % bHeaders.Length] : gHeaders[headerInx];
 
-            freeLines[lineInx].CreatePacket(new Packet.Data(headers[headerInx], vocabulary[wordInx]));
+            freeLines[lineInx].CreatePacket(new Packet.Data(h, vocabulary[wordInx], goodPacket));
         }
     }
 }
