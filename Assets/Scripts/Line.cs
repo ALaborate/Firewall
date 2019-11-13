@@ -40,6 +40,10 @@ public class Line : MonoBehaviour
         if (packetPool.Count == 0)
         {
             pgo = Instantiate(packetPrefab);
+            pgo.transform.SetParent(transform);
+            pgo.transform.localScale = Vector3.one;
+            signal.transform.SetParent(null);
+            signal.transform.SetParent(transform);
         }
         else
         {
@@ -52,8 +56,6 @@ public class Line : MonoBehaviour
         p.data = data;
 
         var prt = pgo.transform as RectTransform;
-        prt.SetParent(transform);
-        prt.localScale = Vector3.one;
         var vHalf = new Vector2(0.5f, 0.5f);
         prt.anchorMin = vHalf;
         prt.anchorMax = vHalf;
@@ -103,7 +105,7 @@ public class Line : MonoBehaviour
                 break;
             anchoredPacketPositions.Add(pos);
         }
-        enterPos = new Vector2(prt.rect.width * 0.7f, 0f);
+        enterPos = new Vector2(prt.rect.width, 0f);
         exitPos = new Vector2(-parentrt.rect.width - prt.rect.width, 0f);
         
         creationPeriod = (prt.rect.width+2*packetPadding) / Packet.maxSpeed;
@@ -117,6 +119,13 @@ public class Line : MonoBehaviour
         packetPool = new List<GameObject>();
     }
 
+    private void Update()
+    {
+        if (Time.time < nextTimeToCreate && !showSignal)
+            showSignal = true;
+        else if (Time.time >= nextTimeToCreate && showSignal)
+            showSignal = false;
+    }
     public override string ToString()
     {
         return $"{nameof(Line)} {showedPackets.Count}";

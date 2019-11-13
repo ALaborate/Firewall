@@ -273,13 +273,13 @@ MonoBehaviour:
   vocabularyFile: {fileID: 4900000, guid: 34790208db73ceb43a4ec90f82af9025, type: 3}
   goodHeadersFile: {fileID: 4900000, guid: 7866eeb46e57aeb4e9f33a100c6bfef0, type: 3}
   badHeadersFile: {fileID: 4900000, guid: d6e266a1007c4334ca3d52c72cb926bc, type: 3}
-  packetsPerSecond: 8
+  packetsPerSecond: 2
   creationPeriod: 0.05
   linePrefab: {fileID: 5721813386558704021, guid: 532b0ee70683207449eb1e805d28e4b1,
     type: 3}
   verticalPadding: 0
   relativeVerticalPadding: 0.03
-  screenCrossingTime: 5
+  screenCrossingTime: 6
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
