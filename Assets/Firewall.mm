@@ -90,6 +90,15 @@
 <node CREATED="1573676449809" ID="ID_1017662940" MODIFIED="1573676484377" TEXT="Packets usualy come in bunches and intensity is wavy"/>
 <node CREATED="1573675523441" ID="ID_1209805090" MODIFIED="1573675527852" TEXT="Questionable">
 <node CREATED="1573675529599" ID="ID_563110820" MODIFIED="1573675543714" TEXT="Progressive acceleration/deceleration"/>
+<node CREATED="1573975830091" ID="ID_693291810" MODIFIED="1573975891964" TEXT="Change constants so that packet speed should balance line quantity">
+<node CREATED="1573975897541" ID="ID_1663903155" MODIFIED="1573975909533" TEXT="Intensity is varriable"/>
+<node CREATED="1573975925054" ID="ID_1453733792" MODIFIED="1573975969071" TEXT="Speed = k/line_q">
+<node CREATED="1573976013186" ID="ID_1918318298" MODIFIED="1573976022600" TEXT="k is hardset varriable"/>
+</node>
+<node CREATED="1573976034721" ID="ID_1989371414" MODIFIED="1573976037502" TEXT="Questions">
+<node CREATED="1573976039271" ID="ID_1710282432" MODIFIED="1573976118803" TEXT="What if lines are full? what to do to intensity? Or, maybe, we sould still do smth to k? Or should we allow user to adjust k manually?"/>
+</node>
+</node>
 </node>
 </node>
 <node CREATED="1573676496030" ID="ID_75968336" MODIFIED="1573676499863" TEXT="Featuring">
