@@ -80,6 +80,7 @@ public class Croupier : MonoBehaviour
         gWords = new List<string>();
         bWords = new List<string>();
         ScrumbleWords();
+        field.Select();
     }
     private void OnPacketClear(Packet p)
     {
