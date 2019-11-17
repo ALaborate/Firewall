@@ -29,7 +29,8 @@ public class Croupier : MonoBehaviour
         set
         {
             initialScreenCrossingTime = value;
-            Packet.maxSpeed = rt.rect.width / initialScreenCrossingTime;
+            if (value > 0f)
+                Packet.maxSpeed = rt.rect.width / initialScreenCrossingTime;
         }
     }
 
