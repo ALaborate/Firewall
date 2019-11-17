@@ -85,19 +85,34 @@
 </node>
 </node>
 </node>
-<node CREATED="1573675331935" ID="ID_1153394446" MODIFIED="1573675340095" POSITION="left" TEXT="Backlog">
+<node CREATED="1573675331935" ID="ID_1153394446" MODIFIED="1573676555737" POSITION="left" TEXT="Backlog">
+<node CREATED="1573676444704" ID="ID_508630250" MODIFIED="1573676446925" TEXT="Ideas">
+<node CREATED="1573676449809" ID="ID_1017662940" MODIFIED="1573676484377" TEXT="Packets usualy come in bunches and intensity is wavy"/>
+<node CREATED="1573675523441" ID="ID_1209805090" MODIFIED="1573675527852" TEXT="Questionable">
+<node CREATED="1573675529599" ID="ID_563110820" MODIFIED="1573675543714" TEXT="Progressive acceleration/deceleration"/>
+</node>
+</node>
+<node CREATED="1573676496030" ID="ID_75968336" MODIFIED="1573676499863" TEXT="Featuring">
+<node CREATED="1573675545340" ID="ID_429405182" MODIFIED="1573675578817" TEXT="Ability to clear bufer from bad packets with benefit"/>
+<node CREATED="1573675645060" ID="ID_1445432255" MODIFIED="1573675651306" TEXT="Take out commas"/>
+<node CREATED="1573675374328" ID="ID_1725474933" MODIFIED="1573675406323" TEXT="Ability to influence good/bad ratio"/>
 <node CREATED="1573675436067" ID="ID_1637156556" MODIFIED="1573675445031" TEXT="Multiple levels with goals">
 <node CREATED="1573675341186" ID="ID_215756621" MODIFIED="1573675373881" TEXT="Ability to adjust quantity of lines"/>
 </node>
-<node CREATED="1573675374328" ID="ID_1725474933" MODIFIED="1573675406323" TEXT="Ability to influence good/bad ratio"/>
-<node CREATED="1573675687157" ID="ID_619746553" MODIFIED="1573675704299" TEXT="Sometimes, there is one word for good and bad at the same time"/>
-<node CREATED="1573675645060" ID="ID_1445432255" MODIFIED="1573675651306" TEXT="Take out commas"/>
-<node CREATED="1573675457162" ID="ID_424713293" MODIFIED="1573675477116" TEXT="Packet glitches">
+<node CREATED="1573758768981" ID="ID_1012516930" MODIFIED="1573758790465" TEXT="The main problem is that accuracy is not encouraged"/>
+<node CREATED="1573831901551" ID="ID_254628597" MODIFIED="1573831933986" TEXT="Ability to drop all the packets on buffer with superblow that influences intensity"/>
+<node CREATED="1573831828156" ID="ID_1538706904" MODIFIED="1573831886877" TEXT="Rewrite packet death classification so that Croupier had one callback for any cause of packet death">
+<icon BUILTIN="full-3"/>
+</node>
+</node>
+<node CREATED="1573676553227" ID="ID_447454609" MODIFIED="1573676562005" TEXT="Bugz">
+<node CREATED="1573675687157" ID="ID_619746553" MODIFIED="1573831823680" TEXT="Sometimes, there is one word for good and bad at the same time">
+<icon BUILTIN="full-2"/>
+</node>
+<node CREATED="1573675457162" ID="ID_424713293" MODIFIED="1573831819665" TEXT="Packet glitches">
+<icon BUILTIN="full-1"/>
 <node CREATED="1573675478112" ID="ID_169692474" MODIFIED="1573675488504" TEXT="Try to moove them in fixed update"/>
 </node>
-<node CREATED="1573675545340" ID="ID_429405182" MODIFIED="1573675578817" TEXT="Ability to clear bufer from bad packets with benefit"/>
-<node CREATED="1573675523441" ID="ID_1209805090" MODIFIED="1573675527852" TEXT="Questionable">
-<node CREATED="1573675529599" ID="ID_563110820" MODIFIED="1573675543714" TEXT="Progressive acceleration/deceleration"/>
 </node>
 </node>
 </node>
