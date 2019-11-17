@@ -71,8 +71,7 @@ public class Croupier : MonoBehaviour
             lrt.anchorMin = Vector2.one;
             lrt.anchorMax = Vector2.one;
             lrt.anchoredPosition = new Vector2(-w * 0.5f, -padding - h * 0.5f - h * i);
-            lines[i].OnPacketClear += OnPacketClear;
-            lines[i].OnPacketDrop += OnPacketDrop;
+            lines[i].OnPacketDeath += OnPacketDeath;
         }
         vocabulary = ParseTextAsset(vocabularyFile);
         gHeaders = ParseTextAsset(goodHeadersFile);
@@ -82,31 +81,29 @@ public class Croupier : MonoBehaviour
         ScrumbleWords();
         field.Select();
     }
-    private void OnPacketClear(Packet p)
+    private void OnPacketDeath(Packet p, Packet.DeathCause cause)
     {
+        if (cause == Packet.DeathCause.Internal)
+            return;
         var data = p.data;
-        if (gHeaders.Contains(data.header))
+        if (cause == Packet.DeathCause.Drop)
         {
-            Accelerate();
+            if (data.good)
+            {
+                Decelerate();
+            }
         }
-        else if (bHeaders.Contains(data.header))
+        else if(cause == Packet.DeathCause.Clear)
         {
-            Decelerate();
+            if (data.good)
+            {
+                Accelerate();
+            }
+            else //bad
+            {
+                Decelerate();
+            }
         }
-        else Debug.LogError($"Packet header {data.header} is not contained");
-    }
-    private void OnPacketDrop(Packet p)
-    {
-        var data = p.data;
-        if (gHeaders.Contains(data.header))
-        {
-            Decelerate();
-        }
-        else if (bHeaders.Contains(data.header))
-        {
-            //Accelerate(); //sic! no reaction to drop bad packets
-        }
-        else Debug.LogError($"Packet header {data.header} is not contained");
     }
     private void Accelerate()
     {

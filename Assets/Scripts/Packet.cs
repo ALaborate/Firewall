@@ -73,7 +73,7 @@ public class Packet : MonoBehaviour
             else
             {
                 rectTransform.anchoredPosition += maxChange;
-                yield return null;
+                yield return null; // new WaitForFixedUpdate();
             }
         }
     }
@@ -90,6 +90,10 @@ public class Packet : MonoBehaviour
             body = _body;
             good = _good;
         }
+    }
+    public enum DeathCause
+    {
+        Internal, Drop, Clear
     }
     public override string ToString()
     {

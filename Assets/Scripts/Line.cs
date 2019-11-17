@@ -8,8 +8,7 @@ public interface ILine
     bool busy { get; }
     bool showSignal { get; }
 
-    event System.Action<Packet> OnPacketDrop;
-    event System.Action<Packet> OnPacketClear;
+    event System.Action<Packet, Packet.DeathCause> OnPacketDeath;
     void CreatePacket(Packet.Data data);
     int ClearPackets(string bodyContent);
     string ToString();
@@ -24,6 +23,7 @@ public class Line : MonoBehaviour, ILine
     public GameObject signal;
 
     #region publicAPI
+    public event System.Action<Packet,Packet.DeathCause> OnPacketDeath;
     public bool busy
     {
         get
@@ -36,11 +36,6 @@ public class Line : MonoBehaviour, ILine
     {
         get { return signal.activeSelf; }
         private set { signal.SetActive(value); }
-    }
-    private void UtilizePacket(GameObject pgo)
-    {
-        packetPool.Add(pgo);
-        pgo.SetActive(false);
     }
     public void CreatePacket(Packet.Data data)
     {
@@ -77,7 +72,7 @@ public class Line : MonoBehaviour, ILine
         if (pushingBlock)
         {
             var fp = showedPackets[0];
-            OnPacketDrop?.Invoke(fp);
+            OnPacketDeath?.Invoke(fp, Packet.DeathCause.Drop);
             fp.onFire = true;
             Debug.Assert(!fp.onTheMove);
             showedPackets.RemoveAt(0);
@@ -90,18 +85,7 @@ public class Line : MonoBehaviour, ILine
         showedPackets.Add(p);
     }
     public IReadOnlyList<Packet> packets { get { return showedPackets; } }
-
-    private void PlacePackets()
-    {
-        for (int i = 0; i < showedPackets.Count; i++)
-        {
-            showedPackets[i].MoveTo(anchoredPacketPositions[i]);
-        }
-    }
-    private void ClearPacket(Packet p)
-    {
-        UtilizePacket(p.gameObject);
-    }
+    //TODO add to interface. Expose read-only packet interface.
     public int ClearPackets(string bodyContent)
     {
         int c = 0;
@@ -109,7 +93,7 @@ public class Line : MonoBehaviour, ILine
         {
             if (showedPackets[i].data.body == bodyContent)
             {
-                OnPacketClear?.Invoke(showedPackets[i]);
+                OnPacketDeath?.Invoke(showedPackets[i], Packet.DeathCause.Clear);
                 ClearPacket(showedPackets[i]);
                 showedPackets.RemoveAt(i--);
                 c++;
@@ -119,9 +103,6 @@ public class Line : MonoBehaviour, ILine
         //TODO check onFIre packet
         return c;
     }
-
-    public event System.Action<Packet> OnPacketDrop;
-    public event System.Action<Packet> OnPacketClear;
     #endregion
     float nextTimeToCreate = -3f, creationPeriod = 1f;
     List<Vector2> anchoredPacketPositions;
@@ -152,6 +133,12 @@ public class Line : MonoBehaviour, ILine
 
         creationPeriod = (prt.rect.width * 1.5f) / Packet.maxSpeed;
         showSignal = false;
+
+        // TODO packet pooling
+        for (int j = 0; j < anchoredPacketPositions.Count+3; j++)
+        {
+
+        }
     }
 
     private void Awake()
@@ -172,5 +159,21 @@ public class Line : MonoBehaviour, ILine
     public override string ToString()
     {
         return $"{nameof(Line)} {showedPackets.Count}";
+    }
+    private void PlacePackets()
+    {
+        for (int i = 0; i < showedPackets.Count; i++)
+        {
+            showedPackets[i].MoveTo(anchoredPacketPositions[i]);
+        }
+    }
+    private void UtilizePacket(GameObject pgo)
+    {
+        packetPool.Add(pgo);
+        pgo.SetActive(false);
+    }
+    private void ClearPacket(Packet p)
+    {
+        UtilizePacket(p.gameObject);
     }
 }
