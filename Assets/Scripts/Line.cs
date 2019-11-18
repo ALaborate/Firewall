@@ -46,10 +46,7 @@ public class Line : MonoBehaviour, ILine
         if (packetPool.Count == 0)
         {
             pgo = Instantiate(packetPrefab);
-            pgo.transform.SetParent(transform);
-            pgo.transform.localScale = Vector3.one;
-            signal.transform.SetParent(null);
-            signal.transform.SetParent(transform);
+            InitPacketGameObject(pgo);
         }
         else
         {
@@ -58,14 +55,9 @@ public class Line : MonoBehaviour, ILine
             pgo.SetActive(true);
         }
         var p = pgo.GetComponent<Packet>();
-        p.onFire = false;
         p.data = data;
+        ReInitPacket(p);
 
-        var prt = pgo.transform as RectTransform;
-        var vHalf = new Vector2(0.5f, 0.5f);
-        prt.anchorMin = vHalf;
-        prt.anchorMax = vHalf;
-        prt.anchoredPosition = enterPos;
         bool pushingBlock = showedPackets.Count >= anchoredPacketPositions.Count;
         bool lastBlock = showedPackets.Count >= anchoredPacketPositions.Count - 1;
 
@@ -137,7 +129,11 @@ public class Line : MonoBehaviour, ILine
         // TODO packet pooling
         for (int j = 0; j < anchoredPacketPositions.Count+3; j++)
         {
-
+            var pgo = Instantiate(packetPrefab);
+            InitPacketGameObject(pgo);
+            var p = pgo.GetComponent<Packet>();
+            ReInitPacket(p);
+            UtilizePacket(pgo);
         }
     }
 
@@ -148,7 +144,6 @@ public class Line : MonoBehaviour, ILine
         anchoredPacketPositions = new List<Vector2>();
         packetPool = new List<GameObject>();
     }
-
     private void Update()
     {
         if (Time.time < nextTimeToCreate && !showSignal)
@@ -175,5 +170,25 @@ public class Line : MonoBehaviour, ILine
     private void ClearPacket(Packet p)
     {
         UtilizePacket(p.gameObject);
+    }
+    private void ReInitPacket(Packet p)
+    {
+        p.onFire = false;
+        var prt = p.transform as RectTransform;
+        prt.anchoredPosition = enterPos;
+    }
+    private void InitPacketGameObject(GameObject pgo)
+    {
+        pgo.transform.SetParent(transform);
+        pgo.transform.localScale = Vector3.one;
+
+        //keep sigal below packets in hierarchy
+        signal.transform.SetParent(null);
+        signal.transform.SetParent(transform);
+
+        var prt = pgo.transform as RectTransform;
+        var vHalf = new Vector2(0.5f, 0.5f);
+        prt.anchorMin = vHalf;
+        prt.anchorMax = vHalf;
     }
 }
