@@ -93,7 +93,7 @@ public class Croupier : MonoBehaviour
                 Decelerate();
             }
         }
-        else if(cause == Packet.DeathCause.Clear)
+        else if (cause == Packet.DeathCause.Clear)
         {
             if (data.good)
             {
@@ -147,13 +147,16 @@ public class Croupier : MonoBehaviour
     }
 
     private List<string> gWords, bWords;
-    HashSet<string> bws = new HashSet<string>(System.StringComparer.Ordinal);
+    HashSet<string> bws = new HashSet<string>(System.StringComparer.Ordinal), gws = new HashSet<string>(System.StringComparer.Ordinal);
     private float nextScrumbleTime = -1f;
     private void AddWord(string word, bool reportedlyGood)
     {
-        if (reportedlyGood && !bws.Contains(word))
+        if (reportedlyGood)
+        {
             gWords.Add(word);
-        else if (!bws.Contains(word))
+            gws.Add(word);
+        }
+        else
         {
             bWords.Add(word);
             bws.Add(word);
@@ -169,6 +172,7 @@ public class Croupier : MonoBehaviour
         gWords.Clear();
         bWords.Clear();
         bws.Clear();
+        gws.Clear();
         foreach (var line in lines)
         {
             foreach (var pack in line.packets)
@@ -179,7 +183,15 @@ public class Croupier : MonoBehaviour
 
         foreach (var word in vocabulary)
         {
-            AddWord(word, Random.value <= gRatio);
+            bool good = gws.Contains(word);
+            bool bad = bws.Contains(word);
+            if (good && bad)
+            {
+                Debug.LogError("Word is good and bad simultaneously");
+                continue;
+            }
+
+            AddWord(word, good || (!bad && Random.value < gRatio));
         }
     }
 
