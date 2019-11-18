@@ -99,30 +99,41 @@
 <node CREATED="1573976039271" ID="ID_1710282432" MODIFIED="1573976118803" TEXT="What if lines are full? what to do to intensity? Or, maybe, we sould still do smth to k? Or should we allow user to adjust k manually?"/>
 </node>
 </node>
-</node>
-</node>
-<node CREATED="1573676496030" ID="ID_75968336" MODIFIED="1573676499863" TEXT="Featuring">
-<node CREATED="1573675545340" ID="ID_429405182" MODIFIED="1573675578817" TEXT="Ability to clear bufer from bad packets with benefit"/>
-<node CREATED="1573675645060" ID="ID_1445432255" MODIFIED="1573675651306" TEXT="Take out commas"/>
 <node CREATED="1573675374328" ID="ID_1725474933" MODIFIED="1573675406323" TEXT="Ability to influence good/bad ratio"/>
 <node CREATED="1573675436067" ID="ID_1637156556" MODIFIED="1573675445031" TEXT="Multiple levels with goals">
 <node CREATED="1573675341186" ID="ID_215756621" MODIFIED="1573675373881" TEXT="Ability to adjust quantity of lines"/>
 </node>
-<node CREATED="1573758768981" ID="ID_1012516930" MODIFIED="1573758790465" TEXT="The main problem is that accuracy is not encouraged"/>
-<node CREATED="1573831901551" ID="ID_254628597" MODIFIED="1573831933986" TEXT="Ability to drop all the packets on buffer with superblow that influences intensity"/>
-<node CREATED="1573831828156" ID="ID_1538706904" MODIFIED="1573831886877" TEXT="Rewrite packet death classification so that Croupier had one callback for any cause of packet death">
-<icon BUILTIN="full-3"/>
+<node CREATED="1573675645060" ID="ID_1445432255" MODIFIED="1573675651306" TEXT="Take out commas"/>
 </node>
+</node>
+<node CREATED="1573676496030" ID="ID_75968336" MODIFIED="1573676499863" TEXT="Featuring">
+<node CREATED="1573831901551" ID="ID_254628597" MODIFIED="1573831933986" TEXT="Ability to drop all the packets on buffer with superblow that influences intensity"/>
 </node>
 <node CREATED="1573676553227" ID="ID_447454609" MODIFIED="1573676562005" TEXT="Bugz">
-<node CREATED="1573675687157" ID="ID_619746553" MODIFIED="1573831823680" TEXT="Sometimes, there is one word for good and bad at the same time">
-<icon BUILTIN="full-2"/>
+<node CREATED="1574077356369" ID="ID_1588031906" MODIFIED="1574077411115" TEXT="creationPeriod of Line is not continuously dependent on Pakcet.maxSpeed"/>
 </node>
-<node CREATED="1573675457162" ID="ID_424713293" MODIFIED="1573831819665" TEXT="Packet glitches">
-<icon BUILTIN="full-1"/>
-<node CREATED="1573675478112" ID="ID_169692474" MODIFIED="1573675488504" TEXT="Try to moove them in fixed update"/>
+<node CREATED="1574077518529" ID="ID_1990953680" MODIFIED="1574077523210" TEXT="Troubles">
+<node CREATED="1573758768981" ID="ID_1012516930" MODIFIED="1574077547399" TEXT="Accuracy is not encouraged"/>
+<node CREATED="1574077549973" ID="ID_829154303" MODIFIED="1574077693417" TEXT="Self-balancing system continulously increases pressure until player fails multiple times">
+<richcontent TYPE="NOTE"><html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      This means that game experience lacks winning cause any effort leads to failure at some point.
+    </p>
+  </body>
+</html>
+</richcontent>
 </node>
 </node>
+</node>
+<node CREATED="1574073215285" ID="ID_1275925613" MODIFIED="1574073225261" POSITION="left" TEXT="Learning principles">
+<node CREATED="1574073226318" ID="ID_790085569" MODIFIED="1574073231806" TEXT="Accuracy first"/>
+<node CREATED="1574073232558" ID="ID_739954566" MODIFIED="1574073252688" TEXT="Frequent repetition"/>
+<node CREATED="1574073257376" ID="ID_1570463176" MODIFIED="1574073324074" TEXT="Continuous enhardening"/>
+<node CREATED="1574073335799" ID="ID_1924295128" MODIFIED="1574077631106" TEXT="Immediate feedback"/>
 </node>
 </node>
 </map>
