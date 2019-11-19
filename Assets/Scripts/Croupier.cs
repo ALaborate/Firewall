@@ -6,33 +6,37 @@ using System.Linq;
 
 public class Croupier : MonoBehaviour
 {
+    [Header("Difficulty parameters")]
+    public float goodPacketsRatio = 0.5f;
+    public float creationIntensity = 2f;
+    public float screenCrossingTime = 3f;
     [Header("Packet creation")]
     public TextAsset vocabularyFile;
     public TextAsset goodHeadersFile;
     public TextAsset badHeadersFile;
 
-    public float packetsPerSecond;
+
     public float creationPeriod = 0.05f;
     public float goodBadWordsScrumblePeriod = 20f;
-    public float intensityAcceleration = 0.1f;
-    public float intensityDecelerationFactor = 0.67f;
-    public float screenCrossingAcceleration = 0.01f;
+    //public float intensityAcceleration = 0.1f;
+    //public float intensityDecelerationFactor = 0.67f;
+    //public float screenCrossingAcceleration = 0.01f;
     public GameObject linePrefab;
 
     [Header("Bufer handling")]
     public float verticalPadding = 0;
     public float relativeVerticalPadding = 0.1f;
-    public float initialScreenCrossingTime = 3f;
-    public float screenCrossingTime
-    {
-        get { return initialScreenCrossingTime; }
-        set
-        {
-            initialScreenCrossingTime = value;
-            if (value > 0f)
-                Packet.maxSpeed = rt.rect.width / initialScreenCrossingTime;
-        }
-    }
+
+    //public float screenCrossingTime
+    //{
+    //    get { return initialScreenCrossingTime; }
+    //    set
+    //    {
+    //        initialScreenCrossingTime = value;
+    //        if (value > 0f)
+    //            Packet.maxSpeed = rt.rect.width / initialScreenCrossingTime;
+    //    }
+    //}
 
     [Header("Typing")]
     public InputField field;
@@ -58,7 +62,8 @@ public class Croupier : MonoBehaviour
         int linesCount = Mathf.FloorToInt((rt.rect.height - padding * 2) / lrt.rect.height);
         lines = new Line[linesCount];
 
-        screenCrossingTime = screenCrossingTime;
+        //screenCrossingTime = screenCrossingTime;
+
         for (int i = 0; i < lines.Length; i++)
         {
             var l = Instantiate(linePrefab);
@@ -107,12 +112,12 @@ public class Croupier : MonoBehaviour
     }
     private void Accelerate()
     {
-        packetsPerSecond += intensityAcceleration;
+        //creationIntensity += intensityAcceleration;
         success.Play();
     }
     private void Decelerate()
     {
-        packetsPerSecond *= intensityDecelerationFactor;
+        //creationIntensity *= intensityDecelerationFactor;
         fail.Play();
     }
 
@@ -124,24 +129,31 @@ public class Croupier : MonoBehaviour
         var freeLines = (from l in lines where l != null && !l.busy select l).ToList();
         if (freeLines.Count == 0)
         {
-            screenCrossingTime -= screenCrossingAcceleration;
+            //screenCrossingTime -= screenCrossingAcceleration;
             return;
         }
 
-        if (freeLines.Count >= lines.Length - 1)
-            screenCrossingTime += screenCrossingAcceleration;
+        //if (freeLines.Count >= lines.Length - 1)
+        //    screenCrossingTime += screenCrossingAcceleration;
 
-        var probability = packetsPerSecond * creationPeriod;
+        var probability = creationIntensity * creationPeriod;
         nextCreationTime = Time.time + creationPeriod;
         if (Random.value <= probability)
         {
-            var lineInx = Mathf.FloorToInt(Random.Range(0f, freeLines.Count));
-            var headerInx = Mathf.FloorToInt(Random.Range(0f, gHeaders.Length + bHeaders.Length));
+            var lineInx = Mathf.FloorToInt(Random.Range(0f, freeLines.Count - 0.1f));
+            bool goodPacket = Random.value < goodPacketsRatio;
+            var headers = gHeaders;
+            var words = gWords;
+            if (!goodPacket)
+            {
+                headers = bHeaders;
+                words = bWords;
+            }
 
-            bool goodPacket = headerInx < gHeaders.Length;
-            var wordInx = Mathf.FloorToInt(Random.Range(0f, goodPacket ? gWords.Count : bWords.Count));
-            string h = !goodPacket ? bHeaders[headerInx % bHeaders.Length] : gHeaders[headerInx];
-            string w = goodPacket ? gWords[wordInx] : bWords[wordInx];
+            var headerInx = Mathf.FloorToInt(Random.Range(0f, headers.Length));
+            var wordInx = Mathf.FloorToInt(Random.Range(0f, words.Count));
+            string h = headers[headerInx];
+            string w = words[wordInx];
             freeLines[lineInx].CreatePacket(new Packet.Data(h, w, goodPacket));
         }
     }
@@ -197,6 +209,9 @@ public class Croupier : MonoBehaviour
 
     void Update()
     {
+        if (screenCrossingTime > 0f)
+            Packet.maxSpeed = rt.rect.width / screenCrossingTime;
+
         CreatePackets();
 
         ScrumbleWords();
