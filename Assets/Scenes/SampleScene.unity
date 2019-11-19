@@ -406,18 +406,32 @@ MonoBehaviour:
   vocabularyFile: {fileID: 4900000, guid: 34790208db73ceb43a4ec90f82af9025, type: 3}
   goodHeadersFile: {fileID: 4900000, guid: 7866eeb46e57aeb4e9f33a100c6bfef0, type: 3}
   badHeadersFile: {fileID: 4900000, guid: d6e266a1007c4334ca3d52c72cb926bc, type: 3}
-  creationIntensity: 2
-  creationPeriod: 0.05
-  goodBadWordsScrumblePeriod: 20
-  goodPacketsRatio: 0.5
-  intensityAcceleration: 0.02
-  intensityDecelerationFactor: 0.9
-  screenCrossingAcceleration: 0.01
   linePrefab: {fileID: 5721813386558704021, guid: 532b0ee70683207449eb1e805d28e4b1,
     type: 3}
+  creationPeriod: 0.05
+  goodBadWordsScrumblePeriod: 20
+  levels:
+  - creationIntensity: 1
+    screenCrossingTime: 8
+    goodPacketsRatio: 0.5
+  - creationIntensity: 1
+    screenCrossingTime: 7
+    goodPacketsRatio: 0.8
+  - creationIntensity: 1.5
+    screenCrossingTime: 7
+    goodPacketsRatio: 0.5
+  - creationIntensity: 1.5
+    screenCrossingTime: 6
+    goodPacketsRatio: 0.6
+  - creationIntensity: 1.8
+    screenCrossingTime: 6
+    goodPacketsRatio: 0.8
+  - creationIntensity: 2
+    screenCrossingTime: 6
+    goodPacketsRatio: 0.5
+  levelIndex: 0
   verticalPadding: 0
   relativeVerticalPadding: 0.03
-  initialScreenCrossingTime: 8
   field: {fileID: 1955324048}
   success: {fileID: 845750092}
   fail: {fileID: 189492724}

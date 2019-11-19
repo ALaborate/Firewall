@@ -13,7 +13,8 @@ public class Croupier : MonoBehaviour
     public GameObject linePrefab;
     public float creationPeriod = 0.05f;
     public float goodBadWordsScrumblePeriod = 20f;
-    public DifficultyLevel difficultyLevel = new DifficultyLevel(2f, 6f, 0.5f);
+    public List<DifficultyLevel> levels;
+    public int levelIndex = 0;
 
     [Header("Bufer handling")]
     public float verticalPadding = 0;
@@ -109,12 +110,12 @@ public class Croupier : MonoBehaviour
             return;
         }
 
-        var probability = difficultyLevel.creationIntensity * creationPeriod;
+        var probability = levels[levelIndex].creationIntensity * creationPeriod;
         nextCreationTime = Time.time + creationPeriod;
         if (Random.value <= probability)
         {
             var lineInx = Mathf.FloorToInt(Random.Range(0f, freeLines.Count - 0.1f));
-            bool goodPacket = Random.value < difficultyLevel.goodPacketsRatio;
+            bool goodPacket = Random.value < levels[levelIndex].goodPacketsRatio;
             var headers = gHeaders;
             var words = gWords;
             if (!goodPacket)
@@ -182,12 +183,24 @@ public class Croupier : MonoBehaviour
 
     void Update()
     {
-        if (difficultyLevel.screenCrossingTime > 0f)
-            Packet.maxSpeed = rt.rect.width / difficultyLevel.screenCrossingTime;
+        if (levels[levelIndex].screenCrossingTime > 0f)
+            Packet.maxSpeed = rt.rect.width / levels[levelIndex].screenCrossingTime;
 
         CreatePackets();
 
         ScrumbleWords();
+
+        if (Input.GetKey(KeyCode.LeftControl))
+        {
+            if (Input.GetKeyDown(KeyCode.Period))
+            {
+                levelIndex++;
+            }
+            else if (Input.GetKeyDown(KeyCode.Comma))
+            {
+                levelIndex--;
+            }
+        }
 
         if (Input.anyKeyDown && UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject != field.gameObject)
             field.Select();
