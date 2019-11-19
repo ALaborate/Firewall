@@ -98,6 +98,7 @@ public class Line : MonoBehaviour, ILine
     }
     #endregion
     float nextTimeToCreate = -3f, creationPeriod = 1f;
+    float packetWidth;
     List<Vector2> anchoredPacketPositions;
     List<Packet> showedPackets;
     List<GameObject> packetPool;
@@ -124,8 +125,16 @@ public class Line : MonoBehaviour, ILine
         enterPos = new Vector2(prt.rect.width, 0f);
         exitPos = new Vector2(-parentrt.rect.width - prt.rect.width, 0f);
 
-        creationPeriod = (prt.rect.width * 1.5f) / Packet.maxSpeed;
+        var srt = signal.transform as RectTransform;
+        srt.SetParent(null);
+        srt.SetParent(rt);
+        srt.anchorMin = Vector2.zero;
+        srt.anchorMax = Vector2.one;
+        srt.sizeDelta = Vector2.zero;
+        srt.anchoredPosition = Vector2.zero;
         showSignal = false;
+        packetWidth = prt.rect.width;
+
 
         // TODO packet pooling
         for (int j = 0; j < anchoredPacketPositions.Count+3; j++)
@@ -186,6 +195,7 @@ public class Line : MonoBehaviour, ILine
         //keep sigal below packets in hierarchy
         signal.transform.SetParent(null);
         signal.transform.SetParent(transform);
+        signal.transform.localPosition = Vector3.zero; //sic! it shouldn`t change, though it changes if screen resolution is Free aspect in the editor
 
         var prt = pgo.transform as RectTransform;
         var vHalf = new Vector2(0.5f, 0.5f);
