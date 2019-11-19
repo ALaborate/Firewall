@@ -6,22 +6,32 @@ using System.Linq;
 
 public class Croupier : MonoBehaviour
 {
-    [Header("Difficulty parameters")]
-    public float goodPacketsRatio = 0.5f;
-    public float creationIntensity = 2f;
-    public float screenCrossingTime = 3f;
+    [System.Serializable]
+    public struct DifficultyLevel
+    {
+        public float creationIntensity;
+        public float screenCrossingTime;
+        public float goodPacketsRatio;
+        public DifficultyLevel(float _creationIntensity, float _screeenCrossingTime, float _goodPacketsRatio)
+        {
+            creationIntensity = _creationIntensity;
+            screenCrossingTime = _screeenCrossingTime;
+            goodPacketsRatio = _goodPacketsRatio;
+        }
+    }
     [Header("Packet creation")]
     public TextAsset vocabularyFile;
     public TextAsset goodHeadersFile;
     public TextAsset badHeadersFile;
-
+    public GameObject linePrefab;
 
     public float creationPeriod = 0.05f;
     public float goodBadWordsScrumblePeriod = 20f;
+    public DifficultyLevel difficultyLevel = new DifficultyLevel(2f, 6f, 0.5f);
     //public float intensityAcceleration = 0.1f;
     //public float intensityDecelerationFactor = 0.67f;
     //public float screenCrossingAcceleration = 0.01f;
-    public GameObject linePrefab;
+
 
     [Header("Bufer handling")]
     public float verticalPadding = 0;
@@ -136,12 +146,12 @@ public class Croupier : MonoBehaviour
         //if (freeLines.Count >= lines.Length - 1)
         //    screenCrossingTime += screenCrossingAcceleration;
 
-        var probability = creationIntensity * creationPeriod;
+        var probability = difficultyLevel.creationIntensity * creationPeriod;
         nextCreationTime = Time.time + creationPeriod;
         if (Random.value <= probability)
         {
             var lineInx = Mathf.FloorToInt(Random.Range(0f, freeLines.Count - 0.1f));
-            bool goodPacket = Random.value < goodPacketsRatio;
+            bool goodPacket = Random.value < difficultyLevel.goodPacketsRatio;
             var headers = gHeaders;
             var words = gWords;
             if (!goodPacket)
@@ -209,8 +219,8 @@ public class Croupier : MonoBehaviour
 
     void Update()
     {
-        if (screenCrossingTime > 0f)
-            Packet.maxSpeed = rt.rect.width / screenCrossingTime;
+        if (difficultyLevel.screenCrossingTime > 0f)
+            Packet.maxSpeed = rt.rect.width / difficultyLevel.screenCrossingTime;
 
         CreatePackets();
 
