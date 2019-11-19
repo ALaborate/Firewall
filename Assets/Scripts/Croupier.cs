@@ -22,10 +22,13 @@ public class Croupier : MonoBehaviour
 
     [Header("Typing")]
     public InputField field;
-    public AudioSource success, fail;
+
 
     [Header("Level challenges")]
     public Text levelText;
+
+    [Header("Sound")]
+    public AudioSource success, fail, levelup, leveldown, collission, challengeStarted;
 
     RectTransform rt;
     Line[] lines;
@@ -185,16 +188,27 @@ public class Croupier : MonoBehaviour
             AddWord(word, good || (!bad && Random.value < gRatio));
         }
     }
+    private IEnumerator PlayDecAfterFailure()
+    {
+        while (true)
+        {
+            if (fail.isPlaying)
+                yield return null;
+            else break;
+        }
+        leveldown.Play();
+        yield break;
+    }
     private void DecLevel()
     {
         if (levelIndex == 0)
         {
-            // TODO play collision sound;
+            collission.Play();
         }
         else
         {
             levelIndex--;
-            // TODO play deceleration sound;
+            StartCoroutine(PlayDecAfterFailure());
         }
         levelText.text = $"Level: {levelIndex}";
     }
@@ -215,7 +229,7 @@ public class Croupier : MonoBehaviour
             else if (challengeEndTime <= Time.time)
             {
                 levelIndex++;
-                //TODO play challenge won sound
+                levelup.Play();
                 challengeEndTime = -1f;
                 levelText.text = $"Level: {levelIndex}";
             }
@@ -233,11 +247,11 @@ public class Croupier : MonoBehaviour
                 {
                     if (levelIndex >= levels.Count - 1)
                     {
-                        // TODO play collision sound;
+                        collission.Play();
                     }
                     else
                     {
-                        //TODO play start challenge sound
+                        challengeStarted.Play();
                         challengeEndTime = Time.time + levels[levelIndex + 1].challengeTime;
                         levelText.text = $"Level: {levelIndex} challenged";
                         errorCount = 0;
