@@ -39,6 +39,7 @@ public class Line : MonoBehaviour, ILine
     }
     public void CreatePacket(Packet.Data data)
     {
+        creationPeriod = (packetWidth * 1.5f) / Packet.maxSpeed;
         if (busy) return;
         nextTimeToCreate = Time.time + creationPeriod;
 
