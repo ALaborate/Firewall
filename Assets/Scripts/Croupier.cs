@@ -16,19 +16,20 @@ public class Croupier : MonoBehaviour
     public List<DifficultyLevel> levels;
     public int levelIndex = 0;
 
-    [Header("Bufer handling")]
-    public float verticalPadding = 0;
-    public float relativeVerticalPadding = 0.1f;
-
     [Header("Typing")]
     public InputField field;
 
-
     [Header("Level challenges")]
     public Text levelText;
+    public ErrorWeights errorWeights;
 
     [Header("Sound")]
-    public AudioSource success, fail, levelup, leveldown, collission, challengeStarted;
+    public AudioSource success;
+    public AudioSource fail, levelup, leveldown, collission, challengeStarted, dryShot;
+
+    [Header("Bufer handling")]
+    public float verticalPadding = 0;
+    public float relativeVerticalPadding = 0.1f;
 
     RectTransform rt;
     Line[] lines;
@@ -83,6 +84,7 @@ public class Croupier : MonoBehaviour
             if (data.good)
             {
                 Decelerate();
+                errorPoints += errorWeights.dropGood;
             }
         }
         else if (cause == Packet.DeathCause.Clear)
@@ -93,6 +95,7 @@ public class Croupier : MonoBehaviour
             }
             else //bad
             {
+                errorPoints += errorWeights.clearBad;
                 Decelerate();
             }
         }
@@ -104,7 +107,6 @@ public class Croupier : MonoBehaviour
     private void Decelerate()
     {
         fail.Play();
-        errorCount++;
     }
 
     private float nextCreationTime = 0f;
@@ -201,8 +203,6 @@ public class Croupier : MonoBehaviour
     }
     private void DecLevel()
     {
-        levelText.text = $"Level: {levelIndex}";
-        challengeEndTime = -1f;
         if (levelIndex == 0)
         {
             collission.Play();
@@ -212,17 +212,20 @@ public class Croupier : MonoBehaviour
             levelIndex--;
             StartCoroutine(PlayDecAfterFailure());
         }
+        levelText.text = $"Level: {levelIndex}";
+        challengeEndTime = -1f;
     }
 
     float challengeEndTime = -1f;
-    int errorCount = 0;
+    float errorPoints = 0;
+    string last = "";
     void Update()
     {
         if (levels[levelIndex].screenCrossingTime > 0f)
             Packet.maxSpeed = rt.rect.width / levels[levelIndex].screenCrossingTime;
         if (challengeEndTime > 0f)
         {
-            if (errorCount >= levels[levelIndex + 1].errorsToFailure)
+            if (errorPoints >= levels[levelIndex + 1].errorsPointsToFailure)
             {
                 DecLevel();
             }
@@ -239,6 +242,9 @@ public class Croupier : MonoBehaviour
 
         ScrumbleWords();
 
+        if (Input.anyKeyDown && UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject != field.gameObject)
+            field.Select();
+
         if (Input.GetKey(KeyCode.LeftControl))
         {
             if (Input.GetKeyDown(KeyCode.Space))
@@ -254,7 +260,7 @@ public class Croupier : MonoBehaviour
                         challengeStarted.Play();
                         challengeEndTime = Time.time + levels[levelIndex + 1].challengeTime;
                         levelText.text = $"Level: {levelIndex} challenged";
-                        errorCount = 0;
+                        errorPoints = 0f;
                     }
                 }
                 else
@@ -262,19 +268,33 @@ public class Croupier : MonoBehaviour
                     DecLevel();
                 }
             }
+            else if (Input.GetKeyDown(KeyCode.Return))
+            {
+                field.text = last;
+            }
         }
-
-        if (Input.anyKeyDown && UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject != field.gameObject)
-            field.Select();
-
-        if (Input.GetKeyDown(KeyCode.Space))
+        else if (Input.GetKeyDown(KeyCode.Space))
         {
+            last = field.text;
+            if (string.IsNullOrEmpty(field.text))
+                return;
             var s = field.text.Trim();
             var occurences = 0;
             foreach (var line in lines)
             {
                 occurences += line.ClearPackets(s);
             }
+            if (occurences == 0)
+            {
+                errorPoints += errorWeights.dryShot;
+                dryShot.Play();
+            }
+            field.text = "";
+            field.Select();
+        }
+        else if (Input.GetKeyDown(KeyCode.Return))
+        {
+            last = field.text;
             field.text = "";
             field.Select();
         }
@@ -286,14 +306,27 @@ public class Croupier : MonoBehaviour
         public float screenCrossingTime;
         public float goodPacketsRatio;
         public float challengeTime;
-        public int errorsToFailure;
-        public DifficultyLevel(float _creationIntensity = 2f, float _screeenCrossingTime = 6f, float _goodPacketsRatio = 0.5f, int _errorsToFailure = 1, float _challengeTime = 60f)
+        public float errorsPointsToFailure;
+        public DifficultyLevel(float _creationIntensity = 2f, float _screeenCrossingTime = 6f, float _goodPacketsRatio = 0.5f, float _errorsToFailure = 1, float _challengeTime = 60f)
         {
             creationIntensity = _creationIntensity;
             screenCrossingTime = _screeenCrossingTime;
             goodPacketsRatio = _goodPacketsRatio;
-            errorsToFailure = _errorsToFailure;
+            errorsPointsToFailure = _errorsToFailure;
             challengeTime = _challengeTime;
+        }
+    }
+    [System.Serializable]
+    public struct ErrorWeights
+    {
+        public float dropGood;
+        public float clearBad;
+        public float dryShot;
+        public ErrorWeights(float dropGood, float clearBad, float dryShot)
+        {
+            this.dropGood = dropGood;
+            this.clearBad = clearBad;
+            this.dryShot = dryShot;
         }
     }
 }
