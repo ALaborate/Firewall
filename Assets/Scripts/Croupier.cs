@@ -24,6 +24,9 @@ public class Croupier : MonoBehaviour
     public InputField field;
     public AudioSource success, fail;
 
+    [Header("Level challenges")]
+    public Text levelText;
+
     RectTransform rt;
     Line[] lines;
     string[] gHeaders, vocabulary, bHeaders;
@@ -65,6 +68,7 @@ public class Croupier : MonoBehaviour
         bWords = new List<string>();
         ScrumbleWords();
         field.Select();
+        levelText.text = $"Level: {levelIndex}";
     }
     private void OnPacketDeath(Packet p, Packet.DeathCause cause)
     {
@@ -97,6 +101,7 @@ public class Croupier : MonoBehaviour
     private void Decelerate()
     {
         fail.Play();
+        errorCount++;
     }
 
     private float nextCreationTime = 0f;
@@ -180,11 +185,41 @@ public class Croupier : MonoBehaviour
             AddWord(word, good || (!bad && Random.value < gRatio));
         }
     }
+    private void DecLevel()
+    {
+        if (levelIndex == 0)
+        {
+            // TODO play collision sound;
+        }
+        else
+        {
+            levelIndex--;
+            // TODO play deceleration sound;
+        }
+        levelText.text = $"Level: {levelIndex}";
+    }
 
+    float challengeEndTime = -1f;
+    int errorCount = 0;
     void Update()
     {
         if (levels[levelIndex].screenCrossingTime > 0f)
             Packet.maxSpeed = rt.rect.width / levels[levelIndex].screenCrossingTime;
+        if (challengeEndTime > 0f)
+        {
+            if (errorCount >= levels[levelIndex + 1].errorsToFailure)
+            {
+                DecLevel();
+                challengeEndTime = -1f;
+            }
+            else if (challengeEndTime <= Time.time)
+            {
+                levelIndex++;
+                //TODO play challenge won sound
+                challengeEndTime = -1f;
+                levelText.text = $"Level: {levelIndex}";
+            }
+        }
 
         CreatePackets();
 
@@ -192,13 +227,26 @@ public class Croupier : MonoBehaviour
 
         if (Input.GetKey(KeyCode.LeftControl))
         {
-            if (Input.GetKeyDown(KeyCode.Period))
+            if (Input.GetKeyDown(KeyCode.Space))
             {
-                levelIndex++;
-            }
-            else if (Input.GetKeyDown(KeyCode.Comma))
-            {
-                levelIndex--;
+                if (challengeEndTime < 0f)
+                {
+                    if (levelIndex >= levels.Count - 1)
+                    {
+                        // TODO play collision sound;
+                    }
+                    else
+                    {
+                        //TODO play start challenge sound
+                        challengeEndTime = Time.time + levels[levelIndex + 1].challengeTime;
+                        levelText.text = $"Level: {levelIndex} challenged";
+                        errorCount = 0;
+                    }
+                }
+                else
+                {
+                    DecLevel();
+                }
             }
         }
 
@@ -223,11 +271,15 @@ public class Croupier : MonoBehaviour
         public float creationIntensity;
         public float screenCrossingTime;
         public float goodPacketsRatio;
-        public DifficultyLevel(float _creationIntensity, float _screeenCrossingTime, float _goodPacketsRatio)
+        public float challengeTime;
+        public int errorsToFailure;
+        public DifficultyLevel(float _creationIntensity = 2f, float _screeenCrossingTime = 6f, float _goodPacketsRatio = 0.5f, int _errorsToFailure = 1, float _challengeTime = 60f)
         {
             creationIntensity = _creationIntensity;
             screenCrossingTime = _screeenCrossingTime;
             goodPacketsRatio = _goodPacketsRatio;
+            errorsToFailure = _errorsToFailure;
+            challengeTime = _challengeTime;
         }
     }
 }
