@@ -7,6 +7,7 @@ public interface ILine
 {
     bool busy { get; }
     bool showSignal { get; }
+    IReadOnlyList<IPacket> packets { get; }
 
     event System.Action<Packet, Packet.DeathCause> OnPacketDeath;
     void CreatePacket(Packet.Data data);
@@ -77,7 +78,7 @@ public class Line : MonoBehaviour, ILine
         p.MoveTo(anchoredPacketPositions[showedPackets.Count]);
         showedPackets.Add(p);
     }
-    public IReadOnlyList<Packet> packets { get { return showedPackets; } }
+    public IReadOnlyList<IPacket> packets { get { return showedPackets; } }
     //TODO add to interface. Expose read-only packet interface.
     public int ClearPackets(string bodyContent)
     {

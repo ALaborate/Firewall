@@ -3,7 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Packet : MonoBehaviour
+public interface IPacket
+{
+    Packet.Data data { get; }
+    bool onFire { get; }
+    bool onTheMove { get; }
+    void MoveTo(Vector2 anchoredPosition, System.Action<GameObject> endCallback = null);
+}
+
+public class Packet : MonoBehaviour, IPacket
 {
     public GameObject fireSign;
     bool _onFire = false;
@@ -54,7 +62,7 @@ public class Packet : MonoBehaviour
         _BodyText = transform.GetChild(1).GetComponentInChildren<Text>();
     }
 
-    public static float maxSpeed=1f;
+    public static float maxSpeed = 1f;
     public static IEnumerator Transition(RectTransform rectTransform, Vector2 targetPosition, System.Action<GameObject> onBreak = null, System.Action internalOnBreak = null)
     {
         while (true)
