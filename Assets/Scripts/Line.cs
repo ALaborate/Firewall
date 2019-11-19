@@ -135,8 +135,6 @@ public class Line : MonoBehaviour, ILine
         showSignal = false;
         packetWidth = prt.rect.width;
 
-
-        // TODO packet pooling
         for (int j = 0; j < anchoredPacketPositions.Count+3; j++)
         {
             var pgo = Instantiate(packetPrefab);

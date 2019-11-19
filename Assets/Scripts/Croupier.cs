@@ -6,47 +6,18 @@ using System.Linq;
 
 public class Croupier : MonoBehaviour
 {
-    [System.Serializable]
-    public struct DifficultyLevel
-    {
-        public float creationIntensity;
-        public float screenCrossingTime;
-        public float goodPacketsRatio;
-        public DifficultyLevel(float _creationIntensity, float _screeenCrossingTime, float _goodPacketsRatio)
-        {
-            creationIntensity = _creationIntensity;
-            screenCrossingTime = _screeenCrossingTime;
-            goodPacketsRatio = _goodPacketsRatio;
-        }
-    }
     [Header("Packet creation")]
     public TextAsset vocabularyFile;
     public TextAsset goodHeadersFile;
     public TextAsset badHeadersFile;
     public GameObject linePrefab;
-
     public float creationPeriod = 0.05f;
     public float goodBadWordsScrumblePeriod = 20f;
     public DifficultyLevel difficultyLevel = new DifficultyLevel(2f, 6f, 0.5f);
-    //public float intensityAcceleration = 0.1f;
-    //public float intensityDecelerationFactor = 0.67f;
-    //public float screenCrossingAcceleration = 0.01f;
-
 
     [Header("Bufer handling")]
     public float verticalPadding = 0;
     public float relativeVerticalPadding = 0.1f;
-
-    //public float screenCrossingTime
-    //{
-    //    get { return initialScreenCrossingTime; }
-    //    set
-    //    {
-    //        initialScreenCrossingTime = value;
-    //        if (value > 0f)
-    //            Packet.maxSpeed = rt.rect.width / initialScreenCrossingTime;
-    //    }
-    //}
 
     [Header("Typing")]
     public InputField field;
@@ -71,8 +42,6 @@ public class Croupier : MonoBehaviour
 
         int linesCount = Mathf.FloorToInt((rt.rect.height - padding * 2) / lrt.rect.height);
         lines = new Line[linesCount];
-
-        //screenCrossingTime = screenCrossingTime;
 
         for (int i = 0; i < lines.Length; i++)
         {
@@ -122,12 +91,10 @@ public class Croupier : MonoBehaviour
     }
     private void Accelerate()
     {
-        //creationIntensity += intensityAcceleration;
         success.Play();
     }
     private void Decelerate()
     {
-        //creationIntensity *= intensityDecelerationFactor;
         fail.Play();
     }
 
@@ -139,12 +106,8 @@ public class Croupier : MonoBehaviour
         var freeLines = (from l in lines where l != null && !l.busy select l).ToList();
         if (freeLines.Count == 0)
         {
-            //screenCrossingTime -= screenCrossingAcceleration;
             return;
         }
-
-        //if (freeLines.Count >= lines.Length - 1)
-        //    screenCrossingTime += screenCrossingAcceleration;
 
         var probability = difficultyLevel.creationIntensity * creationPeriod;
         nextCreationTime = Time.time + creationPeriod;
@@ -239,6 +202,19 @@ public class Croupier : MonoBehaviour
             }
             field.text = "";
             field.Select();
+        }
+    }
+    [System.Serializable]
+    public struct DifficultyLevel
+    {
+        public float creationIntensity;
+        public float screenCrossingTime;
+        public float goodPacketsRatio;
+        public DifficultyLevel(float _creationIntensity, float _screeenCrossingTime, float _goodPacketsRatio)
+        {
+            creationIntensity = _creationIntensity;
+            screenCrossingTime = _screeenCrossingTime;
+            goodPacketsRatio = _goodPacketsRatio;
         }
     }
 }

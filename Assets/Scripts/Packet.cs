@@ -73,7 +73,7 @@ public class Packet : MonoBehaviour
             else
             {
                 rectTransform.anchoredPosition += maxChange;
-                yield return null; // new WaitForFixedUpdate();
+                yield return null;
             }
         }
     }
