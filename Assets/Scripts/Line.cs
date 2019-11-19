@@ -79,7 +79,6 @@ public class Line : MonoBehaviour, ILine
         showedPackets.Add(p);
     }
     public IReadOnlyList<IPacket> packets { get { return showedPackets; } }
-    //TODO add to interface. Expose read-only packet interface.
     public int ClearPackets(string bodyContent)
     {
         int c = 0;

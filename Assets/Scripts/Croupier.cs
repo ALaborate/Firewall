@@ -201,6 +201,8 @@ public class Croupier : MonoBehaviour
     }
     private void DecLevel()
     {
+        levelText.text = $"Level: {levelIndex}";
+        challengeEndTime = -1f;
         if (levelIndex == 0)
         {
             collission.Play();
@@ -210,7 +212,6 @@ public class Croupier : MonoBehaviour
             levelIndex--;
             StartCoroutine(PlayDecAfterFailure());
         }
-        levelText.text = $"Level: {levelIndex}";
     }
 
     float challengeEndTime = -1f;
@@ -224,7 +225,6 @@ public class Croupier : MonoBehaviour
             if (errorCount >= levels[levelIndex + 1].errorsToFailure)
             {
                 DecLevel();
-                challengeEndTime = -1f;
             }
             else if (challengeEndTime <= Time.time)
             {
