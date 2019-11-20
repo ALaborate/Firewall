@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Text;
 using System.Linq;
 
 public class Croupier : MonoBehaviour
@@ -18,6 +19,9 @@ public class Croupier : MonoBehaviour
 
     [Header("Typing")]
     public InputField field;
+    public GameObject helpPanel;
+    public GameObject headerCatalogue;
+    public Text goodHeadersText, badHeadersText;
 
     [Header("Level challenges")]
     public Text levelText;
@@ -73,6 +77,20 @@ public class Croupier : MonoBehaviour
         ScrumbleWords();
         field.Select();
         levelText.text = $"Level: {levelIndex}";
+
+        StringBuilder sb = new StringBuilder();
+        foreach (var h in gHeaders)
+        {
+            sb.AppendFormat("{0}\n", h);
+        }
+        goodHeadersText.text = sb.ToString();
+        sb.Clear();
+        foreach (var h in bHeaders)
+        {
+            sb.AppendFormat("{0}\n", h);
+        }
+        badHeadersText.text = sb.ToString();
+        helpPanel.SetActive(true);//TODO memorize setting to playerprefs
     }
     private void OnPacketDeath(Packet p, Packet.DeathCause cause)
     {
@@ -112,7 +130,7 @@ public class Croupier : MonoBehaviour
     private float nextCreationTime = 0f;
     private void CreatePackets()
     {
-        if (Time.time < nextCreationTime)
+        if (Time.time < nextCreationTime || Packet.maxSpeed == 0f)
             return;
         var freeLines = (from l in lines where l != null && !l.busy select l).ToList();
         if (freeLines.Count == 0)
@@ -219,9 +237,10 @@ public class Croupier : MonoBehaviour
     float challengeEndTime = -1f;
     float errorPoints = 0;
     string last = "";
+    float lastMaxSpeed = 1f;
     void Update()
     {
-        if (levels[levelIndex].screenCrossingTime > 0f)
+        if (Packet.maxSpeed != 0f && levels[levelIndex].screenCrossingTime > 0f)
             Packet.maxSpeed = rt.rect.width / levels[levelIndex].screenCrossingTime;
         if (challengeEndTime > 0f)
         {
@@ -242,67 +261,97 @@ public class Croupier : MonoBehaviour
 
         ScrumbleWords();
 
-        if (Input.anyKeyDown && UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject != field.gameObject)
-            field.Select();
-
-        if (Input.GetKey(KeyCode.LeftControl))
+        if (Input.GetKeyDown(KeyCode.Tab))
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            headerCatalogue.SetActive(!headerCatalogue.activeSelf);
+            if (headerCatalogue.activeSelf)
             {
-                if (challengeEndTime < 0f)
+                lastMaxSpeed = Packet.maxSpeed;
+                Packet.maxSpeed = 0f;
+                UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(null);
+
+            }
+            else
+            {
+                Packet.maxSpeed = lastMaxSpeed;
+                field.Select();
+            }
+        }
+        if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.H))
+        {
+            //field.text = field.text.Substring(0, field.text.Length - 1);
+            helpPanel.SetActive(!helpPanel.activeSelf);
+            if (!helpPanel.activeSelf)
+            {
+                field.Select();
+            }
+            else
+            {
+                UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(null);
+            }
+        }
+
+        if (Packet.maxSpeed != 0f)
+        {
+            if (Input.GetKey(KeyCode.LeftControl))
+            {
+                if (Input.GetKeyDown(KeyCode.Space))
                 {
-                    if (levelIndex >= levels.Count - 1)
+                    if (challengeEndTime < 0f)
                     {
-                        collission.Play();
+                        if (levelIndex >= levels.Count - 1)
+                        {
+                            collission.Play();
+                        }
+                        else
+                        {
+                            challengeStarted.Play();
+                            challengeEndTime = Time.time + levels[levelIndex + 1].challengeTime;
+                            levelText.text = $"Level: {levelIndex} challenged";
+                            errorPoints = 0f;
+                        }
                     }
                     else
                     {
-                        challengeStarted.Play();
-                        challengeEndTime = Time.time + levels[levelIndex + 1].challengeTime;
-                        levelText.text = $"Level: {levelIndex} challenged";
-                        errorPoints = 0f;
+                        DecLevel();
                     }
                 }
-                else
+                else if (Input.GetKeyDown(KeyCode.Z))
                 {
-                    DecLevel();
+                    field.text = last;
+                    field.Select();
+                    field.caretPosition = last.Length;
+                    field.selectionAnchorPosition = field.caretPosition;
                 }
             }
-            else if (Input.GetKeyDown(KeyCode.Z))
+            else if (Input.GetKeyDown(KeyCode.LeftAlt))
             {
-                field.text = last;
-                field.Select();
-                field.caretPosition = last.Length;
-                field.selectionAnchorPosition = field.caretPosition;
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    last = field.text.Trim();
+                    field.text = "";
+                    field.Select();
+                }
             }
-        }
-        else if (Input.GetKeyDown(KeyCode.LeftAlt))
-        {
-            if (Input.GetKeyDown(KeyCode.Space))
+            else if (Input.GetKeyDown(KeyCode.Space))
             {
-                last = field.text.Trim();
+                if (string.IsNullOrEmpty(field.text))
+                    return;
+                var s = field.text.Trim();
+                last = s;
+                var occurences = 0;
+                foreach (var line in lines)
+                {
+                    occurences += line.ClearPackets(s);
+                }
+                if (occurences == 0)
+                {
+                    errorPoints += errorWeights.dryShot;
+                    dryShot.Play();
+                }
                 field.text = "";
                 field.Select();
             }
-        }
-        else if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (string.IsNullOrEmpty(field.text))
-                return;
-            var s = field.text.Trim();
-            last = s;
-            var occurences = 0;
-            foreach (var line in lines)
-            {
-                occurences += line.ClearPackets(s);
-            }
-            if (occurences == 0)
-            {
-                errorPoints += errorWeights.dryShot;
-                dryShot.Play();
-            }
-            field.text = "";
-            field.Select();
         }
     }
     [System.Serializable]
