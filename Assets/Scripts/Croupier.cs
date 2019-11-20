@@ -268,17 +268,29 @@ public class Croupier : MonoBehaviour
                     DecLevel();
                 }
             }
-            else if (Input.GetKeyDown(KeyCode.Return))
+            else if (Input.GetKeyDown(KeyCode.Z))
             {
                 field.text = last;
+                field.Select();
+                field.caretPosition = last.Length;
+                field.selectionAnchorPosition = field.caretPosition;
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.LeftAlt))
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                last = field.text.Trim();
+                field.text = "";
+                field.Select();
             }
         }
         else if (Input.GetKeyDown(KeyCode.Space))
         {
-            last = field.text;
             if (string.IsNullOrEmpty(field.text))
                 return;
             var s = field.text.Trim();
+            last = s;
             var occurences = 0;
             foreach (var line in lines)
             {
@@ -289,12 +301,6 @@ public class Croupier : MonoBehaviour
                 errorPoints += errorWeights.dryShot;
                 dryShot.Play();
             }
-            field.text = "";
-            field.Select();
-        }
-        else if (Input.GetKeyDown(KeyCode.Return))
-        {
-            last = field.text;
             field.text = "";
             field.Select();
         }
