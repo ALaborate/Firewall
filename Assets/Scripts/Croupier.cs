@@ -29,7 +29,7 @@ public class Croupier : MonoBehaviour
 
     [Header("Sound")]
     public AudioSource success;
-    public AudioSource fail, levelup, leveldown, collission, challengeStarted, dryShot;
+    public AudioSource fail, levelup, leveldown, collission, challengeStarted, dryShot, victory;
 
     [Header("Bufer handling")]
     public float verticalPadding = 0;
@@ -302,7 +302,7 @@ public class Croupier : MonoBehaviour
                     {
                         if (levelIndex >= levels.Count - 1)
                         {
-                            collission.Play();
+                            victory.Play();
                         }
                         else
                         {
