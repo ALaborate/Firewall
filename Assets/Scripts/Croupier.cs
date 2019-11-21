@@ -234,6 +234,13 @@ public class Croupier : MonoBehaviour
         challengeEndTime = -1f;
     }
 
+    private void UpdateLevelText()
+    {
+        //var errors = string.Format("{0:F2}/{1:F2}", errorPoints, levels[levelIndex + 1].errorsPointsToFailure);
+        //var timeLeft = string.Format() 
+        levelText.text = $"Level: {levelIndex}{(challengeEndTime > 0f ? $" challenged. Time left: {Mathf.FloorToInt(challengeEndTime - Time.time):D2}. Errors: {errorPoints:F2}/{levels[levelIndex + 1].errorsPointsToFailure:F2}" : "")}";
+    }
+
     float challengeEndTime = -1f;
     float errorPoints = 0;
     string last = "";
@@ -293,7 +300,7 @@ public class Croupier : MonoBehaviour
 
         if (Packet.maxSpeed != 0f)
         {
-            levelText.text = $"Level: {levelIndex}{(challengeEndTime > 0f ? $" challenged. Time left: {Mathf.FloorToInt(challengeEndTime - Time.time)}. Errors: {string.Format("{0:F2}/{1:F2}", errorPoints, levels[levelIndex + 1].errorsPointsToFailure)}" : ".")}";
+            UpdateLevelText();
             if (Input.GetKey(KeyCode.LeftControl))
             {
                 if (Input.GetKeyDown(KeyCode.Space))
