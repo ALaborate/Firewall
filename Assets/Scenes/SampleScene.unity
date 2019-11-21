@@ -617,18 +617,31 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 24
+    m_FontSize: 28
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 2
     m_MaxSize: 40
-    m_Alignment: 1
+    m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
-    m_HorizontalOverflow: 1
+    m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: This text should be helpful
+  m_Text: "Firewall\nIn this game you act as an intelligent firewall software. You've
+    got packets incoming. Each packet has a header (top) and a content (bottom). Your
+    task is to select all good packets and only them. Good and bad packets are identified
+    by their headers. Press Tab button to see distinction list.  \nAll your game screen
+    is your buffer. Incoming packets are pushed into that buffer from the right. The
+    wall of fire itself is on the left. Any packet that is pushed into it burns. \nType
+    in the field below content of a packet and hit Space button in order to select
+    the packet. \nAs your skill improves, you may want to increase your difficulty
+    level. Enter challenge mode to do so by pressing Ctrl+Space. In chalenge you must
+    hold for a given ammount of time (1 minute is typical) with error score that is
+    lesser than given ammount of points. If you fail a challenge, your level will
+    decrease, so be carefull. \nAdditional controls include Ctrl+Z for restoring last
+    submitted word and Alt+Space for deletion of input field content.\nNow, hit Ctrl+H
+    to toggle visibility of this window."
 --- !u!222 &206004437
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -798,7 +811,6 @@ GameObject:
   - component: {fileID: 303108177}
   - component: {fileID: 303108179}
   - component: {fileID: 303108178}
-  - component: {fileID: 303108180}
   m_Layer: 5
   m_Name: GameScreen
   m_TagString: Untagged
@@ -865,76 +877,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 303108176}
   m_CullTransparentMesh: 0
---- !u!114 &303108180
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 303108176}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62137d620ca3aaf4d87a1bac88d3ab98, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  vocabularyFile: {fileID: 4900000, guid: 34790208db73ceb43a4ec90f82af9025, type: 3}
-  goodHeadersFile: {fileID: 4900000, guid: 7866eeb46e57aeb4e9f33a100c6bfef0, type: 3}
-  badHeadersFile: {fileID: 4900000, guid: d6e266a1007c4334ca3d52c72cb926bc, type: 3}
-  linePrefab: {fileID: 5721813386558704021, guid: 532b0ee70683207449eb1e805d28e4b1,
-    type: 3}
-  creationPeriod: 0.05
-  goodBadWordsScrumblePeriod: 20
-  levels:
-  - creationIntensity: 1
-    screenCrossingTime: 8
-    goodPacketsRatio: 0.5
-    challengeTime: 60
-    errorsPointsToFailure: 1
-  - creationIntensity: 1
-    screenCrossingTime: 7
-    goodPacketsRatio: 0.8
-    challengeTime: 60
-    errorsPointsToFailure: 1
-  - creationIntensity: 1.5
-    screenCrossingTime: 7
-    goodPacketsRatio: 0.5
-    challengeTime: 60
-    errorsPointsToFailure: 1
-  - creationIntensity: 1.5
-    screenCrossingTime: 6
-    goodPacketsRatio: 0.6
-    challengeTime: 60
-    errorsPointsToFailure: 1
-  - creationIntensity: 1.8
-    screenCrossingTime: 6
-    goodPacketsRatio: 0.8
-    challengeTime: 60
-    errorsPointsToFailure: 1
-  - creationIntensity: 2
-    screenCrossingTime: 6
-    goodPacketsRatio: 0.5
-    challengeTime: 60
-    errorsPointsToFailure: 1
-  levelIndex: 0
-  field: {fileID: 1955324048}
-  helpPanel: {fileID: 2042868637}
-  headerCatalogue: {fileID: 1349005792}
-  goodHeadersText: {fileID: 1805533598}
-  badHeadersText: {fileID: 216989186}
-  levelText: {fileID: 1710347833}
-  errorWeights:
-    dropGood: 0.4
-    clearBad: 0.4
-    dryShot: 0.5
-  success: {fileID: 845750092}
-  fail: {fileID: 189492724}
-  levelup: {fileID: 1315101596}
-  leveldown: {fileID: 1041269063}
-  collission: {fileID: 139211159}
-  challengeStarted: {fileID: 640326388}
-  dryShot: {fileID: 1158562684}
-  verticalPadding: 0
-  relativeVerticalPadding: 0.03
 --- !u!1 &305698581
 GameObject:
   m_ObjectHideFlags: 0
@@ -3298,29 +3240,49 @@ MonoBehaviour:
   creationPeriod: 0.05
   goodBadWordsScrumblePeriod: 20
   levels:
-  - creationIntensity: 1
-    screenCrossingTime: 8
+  - creationIntensity: 0.5
+    screenCrossingTime: 10
+    goodPacketsRatio: 0.4
+    challengeTime: 60
+    errorsPointsToFailure: 1
+  - creationIntensity: 0.5
+    screenCrossingTime: 9
+    goodPacketsRatio: 0.5
+    challengeTime: 30
+    errorsPointsToFailure: 1
+  - creationIntensity: 0.5
+    screenCrossingTime: 9
+    goodPacketsRatio: 0.8
+    challengeTime: 30
+    errorsPointsToFailure: 1
+  - creationIntensity: 0.8
+    screenCrossingTime: 9
     goodPacketsRatio: 0.5
     challengeTime: 60
     errorsPointsToFailure: 1
   - creationIntensity: 1
+    screenCrossingTime: 9
+    goodPacketsRatio: 0.6
+    challengeTime: 60
+    errorsPointsToFailure: 1
+  - creationIntensity: 1
+    screenCrossingTime: 8
+    goodPacketsRatio: 0.6
+    challengeTime: 60
+    errorsPointsToFailure: 1
+  - creationIntensity: 1.2
     screenCrossingTime: 7
-    goodPacketsRatio: 0.8
+    goodPacketsRatio: 0.5
     challengeTime: 60
     errorsPointsToFailure: 1
   - creationIntensity: 1.5
     screenCrossingTime: 7
-    goodPacketsRatio: 0.5
+    goodPacketsRatio: 0.67
     challengeTime: 60
     errorsPointsToFailure: 1
   - creationIntensity: 1.5
     screenCrossingTime: 6
     goodPacketsRatio: 0.6
-    challengeTime: 60
-    errorsPointsToFailure: 1
-  - creationIntensity: 1.8
-    screenCrossingTime: 6
-    goodPacketsRatio: 0.8
     challengeTime: 60
     errorsPointsToFailure: 1
   - creationIntensity: 2
