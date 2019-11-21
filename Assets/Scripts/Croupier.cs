@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Text;
 using System.Linq;
+using System.IO;
+using System.Runtime.Serialization;
 
 public class Croupier : MonoBehaviour
 {
@@ -38,15 +40,65 @@ public class Croupier : MonoBehaviour
     RectTransform rt;
     Line[] lines;
     string[] gHeaders, vocabulary, bHeaders;
+
+
+    System.Runtime.Serialization.Formatters.Binary.BinaryFormatter binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+    char[] textAssetDelimiters = new char[] { '\n', '\r', ' ' };
+    const string textAssetDelimitersFilename = "dels.dat";
+    const string levelFilename = "lvl.dat";
+    const string vocabularyFileName = "words.txt";
+    private void ReadSettingsFromFiles()
+    {
+        if (File.Exists(textAssetDelimitersFilename))
+        {
+            using (var str = File.OpenRead(textAssetDelimitersFilename))
+            {
+                var data = binaryFormatter.Deserialize(str) as char[];
+                if(data!=null)
+                {
+                    textAssetDelimiters = data;
+                }
+            }
+        }
+
+        if (File.Exists(levelFilename))
+        {
+            using(var str = File.OpenRead(levelFilename))
+            {
+                var data = binaryFormatter.Deserialize(str);
+                levelIndex = (int)data;
+            }
+        }
+
+        if (File.Exists(vocabularyFileName))
+        {
+            vocabulary = ParseTextAsset(new TextAsset(File.ReadAllText(vocabularyFileName)));
+        }
+    }
+    private void WriteSettingsToFiles()
+    {
+        File.WriteAllLines(vocabularyFileName, vocabulary);
+        using (var str = File.OpenWrite(levelFilename))
+        {
+            binaryFormatter.Serialize(str, levelIndex);
+        }
+        using (var str = File.OpenWrite(textAssetDelimitersFilename))
+        {
+            binaryFormatter.Serialize(str, textAssetDelimiters);
+        }
+    }
     private string[] ParseTextAsset(TextAsset textAsset)
     {
         bws.Clear();
-        var ret = (from s in textAsset.text.Split('\n', '\r', ' ') where !string.IsNullOrEmpty(s) && bws.Add(s) select s).ToArray();
+        var ret = (from s in textAsset.text.Split(textAssetDelimiters) where !string.IsNullOrEmpty(s) && bws.Add(s) select s).ToArray();
         bws.Clear();
         return ret;
     }
     void Start()
     {
+        vocabulary = ParseTextAsset(vocabularyFile);
+        ReadSettingsFromFiles();
+
         rt = transform as RectTransform;
         Debug.Assert(rt != null);
         var lrt = linePrefab.transform as RectTransform;
@@ -69,7 +121,7 @@ public class Croupier : MonoBehaviour
             lrt.anchoredPosition = new Vector2(-w * 0.5f, -padding - h * 0.5f - h * i);
             lines[i].OnPacketDeath += OnPacketDeath;
         }
-        vocabulary = ParseTextAsset(vocabularyFile);
+
         gHeaders = ParseTextAsset(goodHeadersFile);
         bHeaders = ParseTextAsset(badHeadersFile);
         gWords = new List<string>();
@@ -375,6 +427,10 @@ public class Croupier : MonoBehaviour
                 field.Select();
             }
         }
+    }
+    private void OnDestroy()
+    {
+        WriteSettingsToFiles();
     }
     [System.Serializable]
     public struct DifficultyLevel
