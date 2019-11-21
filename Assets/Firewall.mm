@@ -4,87 +4,7 @@
 <node CREATED="1573480472061" ID="ID_34864676" MODIFIED="1573480484889" POSITION="right" TEXT="&#x418;&#x433;&#x440;&#x43e;&#x43a; - &#x444;&#x430;&#x435;&#x440;&#x432;&#x43e;&#x43b; &#x43d;&#x430; &#x445;&#x430;&#x439;&#x43b;&#x43e;&#x430;&#x434; &#x441;&#x435;&#x440;&#x432;&#x435;&#x440;&#x435;"/>
 <node CREATED="1573480485757" ID="ID_377312888" MODIFIED="1573480504710" POSITION="right" TEXT="&#x415;&#x441;&#x43b;&#x438; &#x43f;&#x430;&#x43a;&#x435;&#x442; &#x43d;&#x443;&#x436;&#x43d;&#x43e; &#x43f;&#x440;&#x438;&#x43d;&#x44f;&#x442;&#x44c;, &#x43e;&#x43d; &#x434;&#x43e;&#x43b;&#x436;&#x435;&#x43d; &#x43d;&#x430;&#x43f;&#x435;&#x447;&#x430;&#x442;&#x430;&#x442;&#x44c; &#x435;&#x433;&#x43e; &#x441;&#x43e;&#x434;&#x435;&#x440;&#x436;&#x438;&#x43c;&#x43e;&#x435;"/>
 <node CREATED="1573480505206" ID="ID_1842475445" MODIFIED="1573480527581" POSITION="right" TEXT="&#x427;&#x435;&#x43c; &#x443;&#x441;&#x43f;&#x435;&#x448;&#x43d;&#x435;&#x435; &#x43e;&#x43d; &#x441;&#x43f;&#x440;&#x430;&#x432;&#x43b;&#x44f;&#x435;&#x442;&#x441;&#x44f;, &#x442;&#x435;&#x43c; &#x431;&#x43e;&#x43b;&#x44c;&#x448;&#x435; &#x43f;&#x430;&#x43a;&#x435;&#x442;&#x43e;&#x432; &#x43f;&#x440;&#x438;&#x445;&#x43e;&#x434;&#x438;&#x442;"/>
-<node CREATED="1573480528400" ID="ID_1024294504" MODIFIED="1573480539712" POSITION="right" TEXT="&#x415;&#x441;&#x43b;&#x438; &#x43e;&#x43d; &#x43e;&#x448;&#x438;&#x431;&#x441;&#x44f;, &#x43f;&#x430;&#x43a;&#x435;&#x442; &#x43f;&#x440;&#x438;&#x445;&#x43e;&#x434;&#x438;&#x442; &#x43f;&#x43e;&#x432;&#x442;&#x43e;&#x440;&#x43d;&#x43e;"/>
-<node CREATED="1573504655945" ID="ID_1186955553" MODIFIED="1573504664281" POSITION="right" TEXT="&#x421;&#x442;&#x435;&#x43d;&#x430; &#x43e;&#x433;&#x43d;&#x44f; - &#x441;&#x438;&#x441;&#x442;&#x435;&#x43c;&#x430; &#x447;&#x430;&#x441;&#x442;&#x438;&#x446;"/>
 <node CREATED="1573504643905" ID="ID_733666523" MODIFIED="1573542409293" POSITION="right" TEXT="&#x414;&#x432;&#x430; &#x438;&#x437;&#x43c;&#x435;&#x440;&#x435;&#x43d;&#x438;&#x44f;"/>
-<node CREATED="1573480562152" ID="ID_586481234" MODIFIED="1573480564793" POSITION="left" TEXT="&#x412;&#x43e;&#x43f;&#x440;&#x43e;&#x441;&#x44b;">
-<node CREATED="1573480568168" ID="ID_774171089" MODIFIED="1573480592694" TEXT="&#x427;&#x442;&#x43e; &#x441;&#x43e;&#x434;&#x435;&#x440;&#x436;&#x438;&#x442;&#x441;&#x44f; &#x432; &#x43f;&#x430;&#x43a;&#x435;&#x442;&#x430;&#x445;?">
-<node CREATED="1573480592694" ID="ID_1831470750" MODIFIED="1573480594351" TEXT="&#x421;&#x43b;&#x43e;&#x432;&#x430;">
-<node CREATED="1573480595791" ID="ID_1839823275" MODIFIED="1573480602307" TEXT="&#x41a;&#x430;&#x43a; &#x44d;&#x442;&#x43e; &#x43e;&#x43f;&#x440;&#x430;&#x432;&#x434;&#x430;&#x442;&#x44c;?">
-<node CREATED="1573504417249" ID="ID_79157186" MODIFIED="1573504428833" TEXT="&#x411;&#x435;&#x437; &#x43e;&#x43f;&#x440;&#x430;&#x432;&#x434;&#x430;&#x43d;&#x438;&#x44f;  &#x441;&#x43e;&#x439;&#x434;&#x435;&#x442;"/>
-</node>
-</node>
-<node CREATED="1573480612988" ID="ID_1907857911" MODIFIED="1573480618754" TEXT="&#x41f;&#x440;&#x435;&#x434;&#x43b;&#x43e;&#x436;&#x435;&#x43d;&#x438;&#x44f;"/>
-<node CREATED="1573480655621" ID="ID_1904471904" MODIFIED="1573480660324" TEXT="&#x411;&#x438;&#x442;&#x44b;"/>
-<node CREATED="1573480660862" ID="ID_1353753859" MODIFIED="1573480662956" TEXT="&#x427;&#x438;&#x441;&#x43b;&#x430;"/>
-<node CREATED="1573480623348" ID="ID_492249116" MODIFIED="1573480629113" TEXT="&#x41c;&#x430;&#x448;&#x438;&#x43d;&#x43d;&#x44b;&#x435; &#x438;&#x43d;&#x441;&#x442;&#x440;&#x443;&#x43a;&#x446;&#x438;&#x438;">
-<node CREATED="1573480630246" ID="ID_1705726556" MODIFIED="1573480637043" TEXT="&#x41f;&#x43b;&#x43e;&#x445;&#x430;&#x44f; &#x43f;&#x440;&#x430;&#x43a;&#x442;&#x438;&#x43a;&#x430;"/>
-<node CREATED="1573480637459" ID="ID_629974109" MODIFIED="1573480651584" TEXT="&#x417;&#x430;&#x442;&#x43e; &#x445;&#x43e;&#x440;&#x43e;&#x448;&#x435;&#x435; &#x43e;&#x43f;&#x440;&#x430;&#x432;&#x434;&#x430;&#x43d;&#x438;&#x435; &#x442;&#x43e;&#x43c;&#x443;, &#x447;&#x442;&#x43e; &#x438;&#x445; &#x43d;&#x443;&#x436;&#x43d;&#x43e; &#x432;&#x440;&#x443;&#x447;&#x43d;&#x443;&#x44e; &#x43f;&#x435;&#x440;&#x435;&#x43f;&#x435;&#x447;&#x430;&#x442;&#x44b;&#x432;&#x430;&#x442;&#x44c;"/>
-</node>
-</node>
-</node>
-<node CREATED="1573542498956" ID="ID_543884079" MODIFIED="1573542521478" POSITION="left" TEXT="&#x416;&#x438;&#x437;&#x43d;&#x44c; &#x43f;&#x430;&#x43a;&#x435;&#x442;&#x430;">
-<node CREATED="1573542522965" ID="ID_838691389" MODIFIED="1573542529993" TEXT="&#x420;&#x43e;&#x436;&#x434;&#x430;&#x435;&#x442;&#x441;&#x44f; &#x441;&#x43f;&#x440;&#x430;&#x432;&#x430; &#x43d;&#x430; &#x44d;&#x43a;&#x440;&#x430;&#x43d;&#x435;"/>
-<node CREATED="1573542530863" ID="ID_1384078062" MODIFIED="1573542542223" TEXT="&#x41f;&#x435;&#x440;&#x435;&#x43c;&#x435;&#x449;&#x430;&#x435;&#x442;&#x441;&#x44f; &#x432;&#x43b;&#x435;&#x432;&#x43e;">
-<node CREATED="1573542603162" ID="ID_1946644327" MODIFIED="1573542605822" TEXT="&#x41f;&#x43e;&#x441;&#x442;&#x43e;&#x44f;&#x43d;&#x43d;&#x44b;&#x435;">
-<node CREATED="1573542606656" ID="ID_229768021" MODIFIED="1573542613327" TEXT="&#x412;&#x440;&#x435;&#x43c;&#x44f; &#x43f;&#x435;&#x440;&#x435;&#x43c;&#x435;&#x449;&#x435;&#x43d;&#x438;&#x44f;"/>
-<node CREATED="1573542613941" ID="ID_1814648443" MODIFIED="1573542625902" TEXT="&#x41e;&#x442;&#x43d;&#x43e;&#x441;&#x438;&#x442;&#x435;&#x43b;&#x44c;&#x43d;&#x44b;&#x439; &#x440;&#x430;&#x437;&#x43c;&#x435;&#x440; &#x448;&#x438;&#x440;&#x444;&#x442;&#x430;"/>
-</node>
-</node>
-<node CREATED="1573542558308" ID="ID_1773341631" MODIFIED="1573542568518" TEXT="&#x414;&#x43e;&#x441;&#x442;&#x438;&#x433;&#x430;&#x435;&#x442; &#x43a;&#x43e;&#x43d;&#x446;&#x430; &#x431;&#x443;&#x444;&#x435;&#x440;&#x430;"/>
-<node CREATED="1573542570764" ID="ID_1686136569" MODIFIED="1573542585350" TEXT="&#x412;&#x44b;&#x43f;&#x438;&#x445;&#x438;&#x432;&#x430;&#x435;&#x442;&#x441;&#x44f; &#x437;&#x430; &#x43f;&#x440;&#x435;&#x434;&#x435;&#x43b;&#x44b; &#x44d;&#x43a;&#x440;&#x430;&#x43d;&#x430; &#x438; &#x443;&#x43d;&#x438;&#x447;&#x442;&#x43e;&#x436;&#x430;&#x435;&#x442;&#x441;&#x44f;"/>
-</node>
-<node CREATED="1573548464467" ID="ID_1642496167" MODIFIED="1573548466850" POSITION="left" TEXT="&#x417;&#x430;&#x434;&#x430;&#x447;&#x438;">
-<node CREATED="1573548468309" ID="ID_1452449623" MODIFIED="1573548495105" TEXT="&#x41d;&#x430; &#x441;&#x442;&#x430;&#x440;&#x442;&#x435;">
-<node CREATED="1573548496380" ID="ID_1245725621" MODIFIED="1573549357742" TEXT="&#x420;&#x430;&#x437;&#x43c;&#x435;&#x442;&#x438;&#x442;&#x44c; &#x43b;&#x438;&#x43d;&#x438;&#x438; &#x431;&#x443;&#x444;&#x435;&#x440;&#x43e;&#x432; &#x438;&#x441;&#x445;&#x43e;&#x434;&#x44f; &#x438;&#x437; &#x432;&#x44b;&#x441;&#x43e;&#x442; &#x43a;&#x430;&#x43d;&#x432;&#x44b; &#x438; &#x43f;&#x430;&#x43a;&#x435;&#x442;&#x430;">
-<arrowlink DESTINATION="ID_658945668" ENDARROW="Default" ENDINCLINATION="394;0;" ID="Arrow_ID_1624401955" STARTARROW="None" STARTINCLINATION="394;0;"/>
-</node>
-</node>
-<node CREATED="1573548522454" ID="ID_856598286" MODIFIED="1573548527573" TEXT="&#x412;&#x43e; &#x432;&#x440;&#x435;&#x43c;&#x44f; &#x438;&#x433;&#x440;&#x44b;">
-<node CREATED="1573548553195" ID="ID_1703850989" MODIFIED="1573549330022" TEXT="&#x421;&#x43e;&#x437;&#x434;&#x430;&#x432;&#x430;&#x442;&#x44c; &#x43f;&#x430;&#x43a;&#x435;&#x442;&#x44b;">
-<arrowlink DESTINATION="ID_658945668" ENDARROW="Default" ENDINCLINATION="264;0;" ID="Arrow_ID_764893371" STARTARROW="None" STARTINCLINATION="264;0;"/>
-</node>
-<node CREATED="1573548587177" ID="ID_672975210" MODIFIED="1573549330027" TEXT="&#x420;&#x430;&#x441;&#x43f;&#x440;&#x435;&#x434;&#x435;&#x43b;&#x44f;&#x442;&#x44c; &#x43f;&#x430;&#x43a;&#x435;&#x442;&#x44b; &#x43f;&#x43e; &#x43b;&#x438;&#x43d;&#x438;&#x44f;&#x43c; &#x441;&#x43b;&#x443;&#x447;&#x430;&#x439;&#x43d;&#x44b;&#x43c; &#x43e;&#x431;&#x440;&#x430;&#x437;&#x43e;&#x43c;">
-<arrowlink DESTINATION="ID_658945668" ENDARROW="Default" ENDINCLINATION="401;0;" ID="Arrow_ID_285605325" STARTARROW="None" STARTINCLINATION="401;0;"/>
-</node>
-<node CREATED="1573548601298" ID="ID_189314110" MODIFIED="1573549330025" TEXT="&#x414;&#x432;&#x438;&#x433;&#x430;&#x442;&#x44c; &#x43f;&#x430;&#x43a;&#x435;&#x442;&#x44b; &#x432; &#x43b;&#x438;&#x43d;&#x438;&#x44f;&#x445;">
-<arrowlink DESTINATION="ID_658945668" ENDARROW="Default" ENDINCLINATION="251;0;" ID="Arrow_ID_1667794933" STARTARROW="None" STARTINCLINATION="251;0;"/>
-</node>
-<node CREATED="1573548763641" ID="ID_1956691070" MODIFIED="1573549344751" TEXT="Show packets destruction">
-<arrowlink DESTINATION="ID_1982462798" ENDARROW="Default" ENDINCLINATION="472;52;" ID="Arrow_ID_748017239" STARTARROW="None" STARTINCLINATION="533;30;"/>
-</node>
-<node CREATED="1573548661606" ID="ID_1427331538" MODIFIED="1573549330020" TEXT="Push destroyed packets into pool">
-<arrowlink DESTINATION="ID_658945668" ENDARROW="Default" ENDINCLINATION="257;0;" ID="Arrow_ID_1750438020" STARTARROW="None" STARTINCLINATION="257;0;"/>
-</node>
-</node>
-</node>
-<node CREATED="1573548687399" ID="ID_24412209" MODIFIED="1573548695043" POSITION="left" TEXT="&#x410;&#x440;&#x445;&#x438;&#x442;&#x435;&#x43a;&#x442;&#x443;&#x440;&#x430;">
-<node CREATED="1573548701549" ID="ID_748275769" MODIFIED="1573548711674" TEXT="Packet">
-<node CREATED="1573548714876" ID="ID_352961327" MODIFIED="1573548727963" TEXT="public GameObject references">
-<node CREATED="1573548731410" ID="ID_402474649" MODIFIED="1573548734856" TEXT="Texts"/>
-</node>
-<node CREATED="1573548753648" ID="ID_1982462798" MODIFIED="1573549344751" TEXT="OnFire field">
-<linktarget COLOR="#b0b0b0" DESTINATION="ID_1982462798" ENDARROW="Default" ENDINCLINATION="472;52;" ID="Arrow_ID_748017239" SOURCE="ID_1956691070" STARTARROW="None" STARTINCLINATION="533;30;"/>
-</node>
-</node>
-<node CREATED="1573548825706" FOLDED="true" ID="ID_658945668" MODIFIED="1573551937695" TEXT="Croupier">
-<linktarget COLOR="#b0b0b0" DESTINATION="ID_658945668" ENDARROW="Default" ENDINCLINATION="394;0;" ID="Arrow_ID_1624401955" SOURCE="ID_1245725621" STARTARROW="None" STARTINCLINATION="394;0;"/>
-<linktarget COLOR="#b0b0b0" DESTINATION="ID_658945668" ENDARROW="Default" ENDINCLINATION="264;0;" ID="Arrow_ID_764893371" SOURCE="ID_1703850989" STARTARROW="None" STARTINCLINATION="264;0;"/>
-<linktarget COLOR="#b0b0b0" DESTINATION="ID_658945668" ENDARROW="Default" ENDINCLINATION="401;0;" ID="Arrow_ID_285605325" SOURCE="ID_672975210" STARTARROW="None" STARTINCLINATION="401;0;"/>
-<linktarget COLOR="#b0b0b0" DESTINATION="ID_658945668" ENDARROW="Default" ENDINCLINATION="251;0;" ID="Arrow_ID_1667794933" SOURCE="ID_189314110" STARTARROW="None" STARTINCLINATION="251;0;"/>
-<linktarget COLOR="#b0b0b0" DESTINATION="ID_658945668" ENDARROW="Default" ENDINCLINATION="257;0;" ID="Arrow_ID_1750438020" SOURCE="ID_1427331538" STARTARROW="None" STARTINCLINATION="257;0;"/>
-<node CREATED="1573549089555" ID="ID_207778867" MODIFIED="1573549100407" TEXT="Tasks">
-<node CREATED="1573548969998" ID="ID_131755478" MODIFIED="1573548988129" TEXT="Packet creation and placement in line"/>
-<node CREATED="1573548988621" ID="ID_480443839" MODIFIED="1573549009283" TEXT="Pushing packets left in lines if needed"/>
-<node CREATED="1573549009663" ID="ID_717350088" MODIFIED="1573549055642" TEXT="Set packets on fire and utilize &apos;em"/>
-</node>
-<node CREATED="1573549101608" ID="ID_141763045" MODIFIED="1573549110824" TEXT="Fields">
-<node CREATED="1573549123528" ID="ID_205619935" MODIFIED="1573549139180" TEXT="Packets intensity"/>
-<node CREATED="1573549139805" ID="ID_29602354" MODIFIED="1573549158894" TEXT="Quantity of lines"/>
-<node CREATED="1573549176766" ID="ID_1418967784" MODIFIED="1573549181036" TEXT="Line width"/>
-</node>
-</node>
-</node>
 <node CREATED="1573675331935" ID="ID_1153394446" MODIFIED="1573676555737" POSITION="left" TEXT="Backlog">
 <node CREATED="1573676444704" ID="ID_508630250" MODIFIED="1573676446925" TEXT="Ideas">
 <node CREATED="1573676449809" ID="ID_1017662940" MODIFIED="1573676484377" TEXT="Packets usualy come in bunches and intensity is wavy"/>
@@ -99,29 +19,28 @@
 <node CREATED="1573976039271" ID="ID_1710282432" MODIFIED="1573976118803" TEXT="What if lines are full? what to do to intensity? Or, maybe, we sould still do smth to k? Or should we allow user to adjust k manually?"/>
 </node>
 </node>
-<node CREATED="1573675374328" ID="ID_1725474933" MODIFIED="1573675406323" TEXT="Ability to influence good/bad ratio"/>
-<node CREATED="1573675436067" ID="ID_1637156556" MODIFIED="1573675445031" TEXT="Multiple levels with goals">
-<node CREATED="1573675341186" ID="ID_215756621" MODIFIED="1573675373881" TEXT="Ability to adjust quantity of lines"/>
+<node CREATED="1574342464456" ID="ID_1676019481" MODIFIED="1574342477481" TEXT="sandbox mode after victory"/>
+<node CREATED="1574348804602" ID="ID_312775753" MODIFIED="1574348821190" TEXT="If player drops good packet, it goes again">
+<node CREATED="1574348837272" ID="ID_498670498" MODIFIED="1574348853988" TEXT="Why? On small number of words it makes little sense"/>
 </node>
-<node CREATED="1573675645060" ID="ID_1445432255" MODIFIED="1573675651306" TEXT="Take out commas"/>
 </node>
 </node>
 <node CREATED="1573676496030" ID="ID_75968336" MODIFIED="1573676499863" TEXT="Featuring">
-<node CREATED="1573831901551" ID="ID_254628597" MODIFIED="1573831933986" TEXT="Ability to drop all the packets on buffer with superblow that influences intensity"/>
+<node CREATED="1573831901551" ID="ID_254628597" MODIFIED="1574343310043" TEXT="Ability to drop all the packets on buffer with superblow that influences intensity, level or score"/>
+<node CREATED="1574342370197" ID="ID_1668067503" MODIFIED="1574342380469" TEXT="Save last level to playerprefs"/>
+<node CREATED="1574342381585" ID="ID_215560054" MODIFIED="1574343288100" TEXT="Display victory message"/>
 </node>
-<node CREATED="1573676553227" ID="ID_447454609" MODIFIED="1573676562005" TEXT="Bugz">
-<node CREATED="1574077356369" ID="ID_1588031906" MODIFIED="1574077411115" TEXT="creationPeriod of Line is not continuously dependent on Pakcet.maxSpeed"/>
-</node>
-<node CREATED="1574077518529" ID="ID_1990953680" MODIFIED="1574077523210" TEXT="Troubles">
-<node CREATED="1573758768981" ID="ID_1012516930" MODIFIED="1574077547399" TEXT="Accuracy is not encouraged"/>
-<node CREATED="1574077549973" ID="ID_829154303" MODIFIED="1574077693417" TEXT="Self-balancing system continulously increases pressure until player fails multiple times">
+<node CREATED="1573676553227" ID="ID_447454609" MODIFIED="1573676562005" TEXT="Bugz"/>
+<node CREATED="1574077518529" ID="ID_1990953680" MODIFIED="1574348880194" TEXT="Troubles">
+<linktarget COLOR="#b0b0b0" DESTINATION="ID_1990953680" ENDARROW="Default" ENDINCLINATION="192;-62;" ID="Arrow_ID_643266392" SOURCE="ID_1457091356" STARTARROW="None" STARTINCLINATION="457;-141;"/>
+<node CREATED="1574343330255" ID="ID_529534100" MODIFIED="1574343442195" TEXT="Mechanic lacks means to encourage accuracy">
 <richcontent TYPE="NOTE"><html>
   <head>
     
   </head>
   <body>
     <p>
-      This means that game experience lacks winning cause any effort leads to failure at some point.
+      Thats due to the fact that player engages a bunch of targets simultaneously. Thus, such problem is actual for type_and_command mechanics as well.
     </p>
   </body>
 </html>
@@ -134,6 +53,17 @@
 <node CREATED="1574073232558" ID="ID_739954566" MODIFIED="1574073252688" TEXT="Frequent repetition"/>
 <node CREATED="1574073257376" ID="ID_1570463176" MODIFIED="1574073324074" TEXT="Continuous enhardening"/>
 <node CREATED="1574073335799" ID="ID_1924295128" MODIFIED="1574077631106" TEXT="Immediate feedback"/>
+</node>
+<node CREATED="1574343461860" ID="ID_366292194" MODIFIED="1574344730710" POSITION="left" TEXT="Results &amp; experience">
+<node CREATED="1574343495059" ID="ID_851658657" MODIFIED="1574343517915" TEXT="Main mechanic is playable"/>
+<node CREATED="1574343519107" ID="ID_1457091356" MODIFIED="1574348880194" TEXT="Though it has a few troubles">
+<arrowlink DESTINATION="ID_1990953680" ENDARROW="Default" ENDINCLINATION="192;-62;" ID="Arrow_ID_643266392" STARTARROW="None" STARTINCLINATION="457;-141;"/>
+</node>
+<node CREATED="1574348659691" ID="ID_1546287008" MODIFIED="1574348667802" TEXT="And advantages as well">
+<node CREATED="1574348668698" ID="ID_1961217031" MODIFIED="1574348709298" TEXT="encourages blind typing"/>
+<node CREATED="1574348710482" ID="ID_602904664" MODIFIED="1574348730892" TEXT="supports multitasking development"/>
+</node>
+<node CREATED="1574343567139" ID="ID_1266924589" MODIFIED="1574343659584" TEXT="I`ve had hard time planning responsibilities and divide them to behavior classes"/>
 </node>
 </node>
 </map>
