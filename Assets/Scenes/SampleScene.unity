@@ -3291,7 +3291,12 @@ MonoBehaviour:
     goodPacketsRatio: 0.5
     challengeTime: 60
     errorsPointsToFailure: 1
-  levelIndex: 0
+  - creationIntensity: 2.33
+    screenCrossingTime: 5
+    goodPacketsRatio: 0.67
+    challengeTime: 60
+    errorsPointsToFailure: 1.3
+  levelIndex: 1
   field: {fileID: 1955324048}
   helpPanel: {fileID: 2042868637}
   headerCatalogue: {fileID: 1349005792}
