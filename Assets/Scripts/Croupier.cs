@@ -91,6 +91,7 @@ public class Croupier : MonoBehaviour
         }
         badHeadersText.text = sb.ToString();
         helpPanel.SetActive(true);//TODO memorize setting to playerprefs
+        longSounds = new AudioSource[] { levelup, leveldown, victory, challengeStarted };
     }
     private void OnPacketDeath(Packet p, Packet.DeathCause cause)
     {
@@ -219,8 +220,20 @@ public class Croupier : MonoBehaviour
         leveldown.Play();
         yield break;
     }
+    AudioSource[] longSounds;
+    private void StopLongSounds()
+    {
+        foreach (var item in longSounds)
+        {
+            if (item.isPlaying)
+            {
+                item.Stop();
+            }
+        }
+    }
     private void DecLevel()
     {
+        StopLongSounds();
         if (levelIndex == 0)
         {
             collission.Play();
@@ -313,6 +326,7 @@ public class Croupier : MonoBehaviour
                         }
                         else
                         {
+                            StopLongSounds();
                             challengeStarted.Play();
                             challengeEndTime = Time.time + levels[levelIndex + 1].challengeTime;
                             //levelText.text = $"Level: {levelIndex} challenged";
