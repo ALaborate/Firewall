@@ -76,7 +76,7 @@ public class Croupier : MonoBehaviour
         bWords = new List<string>();
         ScrumbleWords();
         field.Select();
-        levelText.text = $"Level: {levelIndex}";
+        //levelText.text = $"Level: {levelIndex}";
 
         StringBuilder sb = new StringBuilder();
         foreach (var h in gHeaders)
@@ -230,7 +230,7 @@ public class Croupier : MonoBehaviour
             levelIndex--;
             StartCoroutine(PlayDecAfterFailure());
         }
-        levelText.text = $"Level: {levelIndex}";
+        //levelText.text = $"Level: {levelIndex}";
         challengeEndTime = -1f;
     }
 
@@ -253,7 +253,7 @@ public class Croupier : MonoBehaviour
                 levelIndex++;
                 levelup.Play();
                 challengeEndTime = -1f;
-                levelText.text = $"Level: {levelIndex}";
+                //levelText.text = $"Level: {levelIndex}";
             }
         }
 
@@ -293,6 +293,7 @@ public class Croupier : MonoBehaviour
 
         if (Packet.maxSpeed != 0f)
         {
+            levelText.text = $"Level: {levelIndex}{(challengeEndTime > 0f ? $" challenged. Time left: {Mathf.FloorToInt(challengeEndTime - Time.time)}. Errors: {string.Format("{0:F2}/{1:F2}", errorPoints, levels[levelIndex + 1].errorsPointsToFailure)}" : ".")}";
             if (Input.GetKey(KeyCode.LeftControl))
             {
                 if (Input.GetKeyDown(KeyCode.Space))
@@ -307,7 +308,7 @@ public class Croupier : MonoBehaviour
                         {
                             challengeStarted.Play();
                             challengeEndTime = Time.time + levels[levelIndex + 1].challengeTime;
-                            levelText.text = $"Level: {levelIndex} challenged";
+                            //levelText.text = $"Level: {levelIndex} challenged";
                             errorPoints = 0f;
                         }
                     }
