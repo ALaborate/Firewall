@@ -412,6 +412,11 @@ public class Croupier : MonoBehaviour
                 if (string.IsNullOrEmpty(field.text))
                     return;
                 var s = field.text.Trim();
+                if (string.IsNullOrEmpty(s))
+                {
+                    field.text = "";
+                    return;
+                }
                 last = s;
                 var occurences = 0;
                 foreach (var line in lines)
