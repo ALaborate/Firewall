@@ -346,7 +346,7 @@ public class Croupier : MonoBehaviour
                     field.selectionAnchorPosition = field.caretPosition;
                 }
             }
-            else if (Input.GetKeyDown(KeyCode.LeftAlt))
+            else if (Input.GetKey(KeyCode.LeftAlt))
             {
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
