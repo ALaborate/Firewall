@@ -36,6 +36,7 @@ public class Packet : MonoBehaviour, IPacket
         {
             _data = value;
             BodyText.text = _data.body;
+            background.color = data.bgcolor;
         }
     }
 
@@ -52,10 +53,12 @@ public class Packet : MonoBehaviour, IPacket
     {
         onFire = false;
     }
+    private Image background;
     void Awake()
     {
         Debug.Assert(transform.childCount >= 2, "Packet has two children for text");
         BodyText = transform.GetComponentInChildren<Text>();
+        background = transform.GetComponentInChildren<Image>();
     }
 
     public static float maxSpeed = 1f;
@@ -86,11 +89,13 @@ public class Packet : MonoBehaviour, IPacket
     public struct Data
     {
         public string body;
+        public Color bgcolor;
         public readonly bool good;
-        public Data(string _body, bool _good)
+        public Data(string _body, bool _good, Color? _bgcolor=null)
         {
             body = _body;
             good = _good;
+            bgcolor = _bgcolor.HasValue ? _bgcolor.Value : new Color(4f, 99f, 255f);
         }
     }
     public enum DeathCause

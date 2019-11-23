@@ -13,9 +13,10 @@ public class Croupier : MonoBehaviour
     public TextAsset vocabularyFile;
     public GameObject linePrefab;
     public float creationPeriod = 0.05f;
-    public float goodBadWordsScrumblePeriod = 20f;
     public List<DifficultyLevel> levels;
     public int levelIndex = 0;
+    public Color goodPacketColor;
+    public Color badPacketColor;
 
     [Header("Typing")]
     public InputField field;
@@ -166,14 +167,15 @@ public class Croupier : MonoBehaviour
             var lineInx = Mathf.FloorToInt(Random.Range(0f, freeLines.Count - 0.1f));
             bool goodPacket = Random.value < levels[levelIndex].goodPacketsRatio;
             var words = gWords;
+            var color = goodPacketColor;
             if (!goodPacket)
             {
                 words = bWords;
+                color = badPacketColor;
             }
-
             var wordInx = Mathf.FloorToInt(Random.Range(0f, words.Count));
             string w = words[wordInx];
-            freeLines[lineInx].CreatePacket(new Packet.Data(w, goodPacket));
+            freeLines[lineInx].CreatePacket(new Packet.Data(w, goodPacket, color));
         }
     }
     private IEnumerator PlayDecAfterFailure()
