@@ -11,8 +11,8 @@ public class Croupier : MonoBehaviour
 {
     [Header("Packet creation")]
     public TextAsset vocabularyFile;
-    public TextAsset goodHeadersFile;
-    public TextAsset badHeadersFile;
+    //public TextAsset goodHeadersFile;
+    //public TextAsset badHeadersFile;
     public GameObject linePrefab;
     public float creationPeriod = 0.05f;
     public float goodBadWordsScrumblePeriod = 20f;
@@ -22,8 +22,8 @@ public class Croupier : MonoBehaviour
     [Header("Typing")]
     public InputField field;
     public GameObject helpPanel;
-    public GameObject headerCatalogue;
-    public Text goodHeadersText, badHeadersText;
+    //public GameObject headerCatalogue;
+    //public Text goodHeadersText, badHeadersText;
 
     [Header("Level challenges")]
     public Text levelText;
@@ -39,27 +39,27 @@ public class Croupier : MonoBehaviour
 
     RectTransform rt;
     Line[] lines;
-    string[] gHeaders, vocabulary, bHeaders;
+    //string[] gHeaders, vocabulary, bHeaders;
 
 
     System.Runtime.Serialization.Formatters.Binary.BinaryFormatter binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-    char[] textAssetDelimiters = new char[] { '\n', '\r', ' ' };
-    const string textAssetDelimitersFilename = "dels.dat";
+    static readonly char[] textAssetDelimiters = new char[] { '\n', '\r' };
+    //const string textAssetDelimitersFilename = "dels.dat";
     const string levelFilename = "lvl.dat";
     const string vocabularyFileName = "words.txt";
     private void ReadSettingsFromFiles()
     {
-        if (File.Exists(textAssetDelimitersFilename))
-        {
-            using (var str = File.OpenRead(textAssetDelimitersFilename))
-            {
-                var data = binaryFormatter.Deserialize(str) as char[];
-                if(data!=null)
-                {
-                    textAssetDelimiters = data;
-                }
-            }
-        }
+        //if (File.Exists(textAssetDelimitersFilename))
+        //{
+        //    using (var str = File.OpenRead(textAssetDelimitersFilename))
+        //    {
+        //        var data = binaryFormatter.Deserialize(str) as char[];
+        //        if(data!=null)
+        //        {
+        //            textAssetDelimiters = data;
+        //        }
+        //    }
+        //}
 
         if (File.Exists(levelFilename))
         {
@@ -72,31 +72,46 @@ public class Croupier : MonoBehaviour
 
         if (File.Exists(vocabularyFileName))
         {
-            vocabulary = ParseTextAsset(new TextAsset(File.ReadAllText(vocabularyFileName)));
+            ParseTextAsset(new TextAsset(File.ReadAllText(vocabularyFileName)), gWords, bWords);
         }
     }
     private void WriteSettingsToFiles()
     {
-        File.WriteAllLines(vocabularyFileName, vocabulary);
+        //File.WriteAllLines(vocabularyFileName, vocabulary);
+        if (!File.Exists(vocabularyFileName))
+            File.WriteAllText(vocabularyFileName, vocabularyFile.text);
         using (var str = File.OpenWrite(levelFilename))
         {
             binaryFormatter.Serialize(str, levelIndex);
         }
-        using (var str = File.OpenWrite(textAssetDelimitersFilename))
-        {
-            binaryFormatter.Serialize(str, textAssetDelimiters);
-        }
+        //using (var str = File.OpenWrite(textAssetDelimitersFilename))
+        //{
+        //    binaryFormatter.Serialize(str, textAssetDelimiters);
+        //}
     }
-    private string[] ParseTextAsset(TextAsset textAsset)
+    const char delimiterInVocabulary = ' ';
+    private static void ParseTextAsset(TextAsset textAsset, List<string> good, List<string> bad)
     {
-        bws.Clear();
-        var ret = (from s in textAsset.text.Split(textAssetDelimiters) where !string.IsNullOrEmpty(s) && bws.Add(s) select s).ToArray();
-        bws.Clear();
-        return ret;
+        foreach (var line in textAsset.text.Split(textAssetDelimiters))
+        {
+            var parts = from l in line.Split(delimiterInVocabulary) where !string.IsNullOrEmpty(l) select l;
+            if(parts.Count()>=2)
+            {
+                good.Add(parts.ElementAt(1));
+                bad.Add(parts.ElementAt(0));
+            }
+        }
+        //bws.Clear();
+        //var ret = (from s in textAsset.text.Split(textAssetDelimiters) where !string.IsNullOrEmpty(s) && bws.Add(s) select s).ToArray();
+        //bws.Clear();
+        //return ret;
     }
     void Start()
     {
-        vocabulary = ParseTextAsset(vocabularyFile);
+        //vocabulary = ParseTextAsset(vocabularyFile);
+        gWords = new List<string>();
+        bWords = new List<string>();
+        ParseTextAsset(vocabularyFile, gWords, bWords);
         ReadSettingsFromFiles();
 
         rt = transform as RectTransform;
@@ -122,26 +137,25 @@ public class Croupier : MonoBehaviour
             lines[i].OnPacketDeath += OnPacketDeath;
         }
 
-        gHeaders = ParseTextAsset(goodHeadersFile);
-        bHeaders = ParseTextAsset(badHeadersFile);
-        gWords = new List<string>();
-        bWords = new List<string>();
-        ScrumbleWords();
+        //gHeaders = ParseTextAsset(goodHeadersFile);
+        //bHeaders = ParseTextAsset(badHeadersFile);
+
+        //ScrumbleWords();
         field.Select();
         //levelText.text = $"Level: {levelIndex}";
 
-        StringBuilder sb = new StringBuilder();
-        foreach (var h in gHeaders)
-        {
-            sb.AppendFormat("{0}\n", h);
-        }
-        goodHeadersText.text = sb.ToString();
-        sb.Clear();
-        foreach (var h in bHeaders)
-        {
-            sb.AppendFormat("{0}\n", h);
-        }
-        badHeadersText.text = sb.ToString();
+        //StringBuilder sb = new StringBuilder();
+        ////foreach (var h in gHeaders)
+        ////{
+        ////    sb.AppendFormat("{0}\n", h);
+        ////}
+        ////goodHeadersText.text = sb.ToString();
+        //sb.Clear();
+        //foreach (var h in bHeaders)
+        //{
+        //    sb.AppendFormat("{0}\n", h);
+        //}
+        //badHeadersText.text = sb.ToString();
         helpPanel.SetActive(true);//TODO memorize setting to playerprefs
         longSounds = new AudioSource[] { levelup, leveldown, victory, challengeStarted };
     }
@@ -197,70 +211,70 @@ public class Croupier : MonoBehaviour
         {
             var lineInx = Mathf.FloorToInt(Random.Range(0f, freeLines.Count - 0.1f));
             bool goodPacket = Random.value < levels[levelIndex].goodPacketsRatio;
-            var headers = gHeaders;
+            //var headers = gHeaders;
             var words = gWords;
             if (!goodPacket)
             {
-                headers = bHeaders;
+                //headers = bHeaders;
                 words = bWords;
             }
 
-            var headerInx = Mathf.FloorToInt(Random.Range(0f, headers.Length));
+            //var headerInx = Mathf.FloorToInt(Random.Range(0f, headers.Length));
             var wordInx = Mathf.FloorToInt(Random.Range(0f, words.Count));
-            string h = headers[headerInx];
+            //string h = headers[headerInx];
             string w = words[wordInx];
-            freeLines[lineInx].CreatePacket(new Packet.Data(h, w, goodPacket));
+            freeLines[lineInx].CreatePacket(new Packet.Data(/*h,*/ w, goodPacket));
         }
     }
 
     private List<string> gWords, bWords;
-    HashSet<string> bws = new HashSet<string>(System.StringComparer.Ordinal), gws = new HashSet<string>(System.StringComparer.Ordinal);
-    private float nextScrumbleTime = -1f;
-    private void AddWord(string word, bool reportedlyGood)
-    {
-        if (reportedlyGood)
-        {
-            gWords.Add(word);
-            gws.Add(word);
-        }
-        else
-        {
-            bWords.Add(word);
-            bws.Add(word);
-        }
-    }
-    private void ScrumbleWords()
-    {
-        if (Time.time < nextScrumbleTime)
-            return;
-        nextScrumbleTime = Time.time + goodBadWordsScrumblePeriod;
-        float gRatio = gHeaders.Length / (float)(gHeaders.Length + bHeaders.Length);
+    //HashSet<string> bws = new HashSet<string>(System.StringComparer.Ordinal), gws = new HashSet<string>(System.StringComparer.Ordinal);
+    //private float nextScrumbleTime = -1f;
+    //private void AddWord(string word, bool reportedlyGood)
+    //{
+    //    if (reportedlyGood)
+    //    {
+    //        gWords.Add(word);
+    //        gws.Add(word);
+    //    }
+    //    else
+    //    {
+    //        bWords.Add(word);
+    //        bws.Add(word);
+    //    }
+    //}
+    //private void ScrumbleWords()
+    //{
+    //    if (Time.time < nextScrumbleTime)
+    //        return;
+    //    nextScrumbleTime = Time.time + goodBadWordsScrumblePeriod;
+    //    float gRatio = gHeaders.Length / (float)(gHeaders.Length + bHeaders.Length);
 
-        gWords.Clear();
-        bWords.Clear();
-        bws.Clear();
-        gws.Clear();
-        foreach (var line in lines)
-        {
-            foreach (var pack in line.packets)
-            {
-                AddWord(pack.data.body, pack.data.good);
-            }
-        }
+    //    gWords.Clear();
+    //    bWords.Clear();
+    //    bws.Clear();
+    //    gws.Clear();
+    //    foreach (var line in lines)
+    //    {
+    //        foreach (var pack in line.packets)
+    //        {
+    //            AddWord(pack.data.body, pack.data.good);
+    //        }
+    //    }
 
-        foreach (var word in vocabulary)
-        {
-            bool good = gws.Contains(word);
-            bool bad = bws.Contains(word);
-            if (good && bad)
-            {
-                Debug.LogError("Word is good and bad simultaneously");
-                continue;
-            }
+    //    foreach (var word in vocabulary)
+    //    {
+    //        bool good = gws.Contains(word);
+    //        bool bad = bws.Contains(word);
+    //        if (good && bad)
+    //        {
+    //            Debug.LogError("Word is good and bad simultaneously");
+    //            continue;
+    //        }
 
-            AddWord(word, good || (!bad && Random.value < gRatio));
-        }
-    }
+    //        AddWord(word, good || (!bad && Random.value < gRatio));
+    //    }
+    //}
     private IEnumerator PlayDecAfterFailure()
     {
         while (true)
@@ -331,24 +345,20 @@ public class Croupier : MonoBehaviour
 
         CreatePackets();
 
-        ScrumbleWords();
+        //ScrumbleWords();
 
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            headerCatalogue.SetActive(!headerCatalogue.activeSelf);
-            if (headerCatalogue.activeSelf)
-            {
-                lastMaxSpeed = Packet.maxSpeed;
-                Packet.maxSpeed = 0f;
-                UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(null);
-
-            }
-            else
-            {
-                Packet.maxSpeed = lastMaxSpeed;
-                field.Select();
-            }
-        }
+        //if (Input.GetKeyDown(KeyCode.Tab))
+        //{
+        //    headerCatalogue.SetActive(!headerCatalogue.activeSelf);
+        //    if (headerCatalogue.activeSelf)
+        //    {
+        //        StopTime();
+        //    }
+        //    else
+        //    {
+        //        ResumeTime();
+        //    }
+        //}
         if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.H))
         {
             //field.text = field.text.Substring(0, field.text.Length - 1);
@@ -433,6 +443,20 @@ public class Croupier : MonoBehaviour
             }
         }
     }
+
+    private void ResumeTime()
+    {
+        Packet.maxSpeed = lastMaxSpeed;
+        field.Select();
+    }
+
+    private void StopTime()
+    {
+        lastMaxSpeed = Packet.maxSpeed;
+        Packet.maxSpeed = 0f;
+        UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(null);
+    }
+
     private void OnDestroy()
     {
         WriteSettingsToFiles();
