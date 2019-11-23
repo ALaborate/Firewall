@@ -27,8 +27,7 @@ public class Packet : MonoBehaviour, IPacket
             fireSign.SetActive(value);
         }
     }
-    //public Text HeaderText { get { return _HeaderText; } }
-    public Text BodyText { get { return _BodyText; } }
+    public Text BodyText { get; private set; }
     public bool onTheMove { get { return transition != null; } }
     public Data data
     {
@@ -36,7 +35,6 @@ public class Packet : MonoBehaviour, IPacket
         set
         {
             _data = value;
-            //HeaderText.text = _data.header;
             BodyText.text = _data.body;
         }
     }
@@ -49,7 +47,6 @@ public class Packet : MonoBehaviour, IPacket
         transition = StartCoroutine(Transition(transform as RectTransform, anchoredPosition, endCallback, ClearTransition));
     }
     Data _data;
-    private Text /*_HeaderText,*/ _BodyText;
     private Coroutine transition = null;
     private void Start()
     {
@@ -58,9 +55,7 @@ public class Packet : MonoBehaviour, IPacket
     void Awake()
     {
         Debug.Assert(transform.childCount >= 2, "Packet has two children for text");
-        //_HeaderText = transform.GetChild(0).GetComponentInChildren<Text>();
-        //_BodyText = transform.GetChild(1).GetComponentInChildren<Text>();
-        _BodyText = transform.GetComponentInChildren<Text>();
+        BodyText = transform.GetComponentInChildren<Text>();
     }
 
     public static float maxSpeed = 1f;
@@ -90,12 +85,10 @@ public class Packet : MonoBehaviour, IPacket
     [System.Serializable]
     public struct Data
     {
-        //public string header;
         public string body;
         public readonly bool good;
-        public Data(/*string _header,*/ string _body, bool _good)
+        public Data(string _body, bool _good)
         {
-            //header = _header;
             body = _body;
             good = _good;
         }
