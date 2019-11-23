@@ -24,6 +24,7 @@
 <node CREATED="1574348837272" ID="ID_498670498" MODIFIED="1574348853988" TEXT="Why? On small number of words it makes little sense"/>
 </node>
 </node>
+<node CREATED="1574354780725" ID="ID_138216902" MODIFIED="1574354792279" TEXT="Add savefiles to gitignore"/>
 </node>
 <node CREATED="1573676496030" ID="ID_75968336" MODIFIED="1573676499863" TEXT="Featuring">
 <node CREATED="1573831901551" ID="ID_254628597" MODIFIED="1574343310043" TEXT="Ability to drop all the packets on buffer with superblow that influences intensity, level or score"/>
