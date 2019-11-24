@@ -16,7 +16,6 @@ public class Croupier : MonoBehaviour
     public List<DifficultyLevel> levels;
     public int levelIndex = 0;
     public Color goodPacketColor;
-    public Color badPacketColor;
 
     [Header("Typing")]
     public InputField field;
@@ -171,7 +170,10 @@ public class Croupier : MonoBehaviour
             if (!goodPacket)
             {
                 words = bWords;
-                color = badPacketColor;
+                for (int i = 0; i < 3; i++)
+                {
+                    color[i] *= levels[levelIndex].badColorCoef;
+                }
             }
             var wordInx = Mathf.FloorToInt(Random.Range(0f, words.Count));
             string w = words[wordInx];
@@ -353,13 +355,15 @@ public class Croupier : MonoBehaviour
         public float goodPacketsRatio;
         public float challengeTime;
         public float errorsPointsToFailure;
-        public DifficultyLevel(float _creationIntensity = 2f, float _screeenCrossingTime = 6f, float _goodPacketsRatio = 0.5f, float _errorsToFailure = 1, float _challengeTime = 60f)
+        public float badColorCoef;
+        public DifficultyLevel(float _creationIntensity = 2f, float _screeenCrossingTime = 6f, float _goodPacketsRatio = 0.5f, float _errorsToFailure = 1, float _challengeTime = 60f, float _badColorCoef = 0.98f)
         {
             creationIntensity = _creationIntensity;
             screenCrossingTime = _screeenCrossingTime;
             goodPacketsRatio = _goodPacketsRatio;
             errorsPointsToFailure = _errorsToFailure;
             challengeTime = _challengeTime;
+            badColorCoef = _badColorCoef;
         }
     }
     [System.Serializable]

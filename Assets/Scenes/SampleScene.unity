@@ -3243,59 +3243,69 @@ MonoBehaviour:
     goodPacketsRatio: 0.4
     challengeTime: 60
     errorsPointsToFailure: 1
+    badColorCoef: 0.1
   - creationIntensity: 0.5
     screenCrossingTime: 9
     goodPacketsRatio: 0.5
     challengeTime: 30
     errorsPointsToFailure: 1
+    badColorCoef: 0.3
   - creationIntensity: 0.5
     screenCrossingTime: 9
     goodPacketsRatio: 0.8
     challengeTime: 30
     errorsPointsToFailure: 1
+    badColorCoef: 0.3
   - creationIntensity: 0.8
     screenCrossingTime: 9
     goodPacketsRatio: 0.5
     challengeTime: 60
     errorsPointsToFailure: 1
+    badColorCoef: 0.3
   - creationIntensity: 1
     screenCrossingTime: 9
     goodPacketsRatio: 0.6
     challengeTime: 60
     errorsPointsToFailure: 1
+    badColorCoef: 0.5
   - creationIntensity: 1
     screenCrossingTime: 8
     goodPacketsRatio: 0.6
     challengeTime: 60
     errorsPointsToFailure: 1
+    badColorCoef: 0.5
   - creationIntensity: 1.2
     screenCrossingTime: 7
     goodPacketsRatio: 0.5
     challengeTime: 60
     errorsPointsToFailure: 1
+    badColorCoef: 0.5
   - creationIntensity: 1.5
     screenCrossingTime: 7
     goodPacketsRatio: 0.67
     challengeTime: 60
     errorsPointsToFailure: 1
+    badColorCoef: 0.7
   - creationIntensity: 1.5
     screenCrossingTime: 6
     goodPacketsRatio: 0.6
     challengeTime: 60
     errorsPointsToFailure: 1
+    badColorCoef: 0.7
   - creationIntensity: 2
     screenCrossingTime: 6
     goodPacketsRatio: 0.5
     challengeTime: 60
     errorsPointsToFailure: 1
+    badColorCoef: 0.7
   - creationIntensity: 2.33
     screenCrossingTime: 5
     goodPacketsRatio: 0.67
     challengeTime: 60
     errorsPointsToFailure: 1.3
+    badColorCoef: 0.9
   levelIndex: 1
   goodPacketColor: {r: 0.0141509175, g: 0.3895371, b: 1, a: 1}
-  badPacketColor: {r: 0, g: 0.25292405, b: 0.9254902, a: 1}
   field: {fileID: 1955324048}
   helpPanel: {fileID: 2042868637}
   levelText: {fileID: 1710347833}
