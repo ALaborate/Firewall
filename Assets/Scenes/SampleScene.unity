@@ -3234,74 +3234,80 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vocabularyFile: {fileID: 4900000, guid: 34790208db73ceb43a4ec90f82af9025, type: 3}
-  goodHeadersFile: {fileID: 4900000, guid: 7866eeb46e57aeb4e9f33a100c6bfef0, type: 3}
-  badHeadersFile: {fileID: 4900000, guid: d6e266a1007c4334ca3d52c72cb926bc, type: 3}
   linePrefab: {fileID: 5721813386558704021, guid: 532b0ee70683207449eb1e805d28e4b1,
     type: 3}
   creationPeriod: 0.05
-  goodBadWordsScrumblePeriod: 20
   levels:
   - creationIntensity: 0.5
     screenCrossingTime: 10
     goodPacketsRatio: 0.4
     challengeTime: 60
     errorsPointsToFailure: 1
+    badColorCoef: 0.1
   - creationIntensity: 0.5
     screenCrossingTime: 9
     goodPacketsRatio: 0.5
     challengeTime: 30
     errorsPointsToFailure: 1
+    badColorCoef: 0.3
   - creationIntensity: 0.5
     screenCrossingTime: 9
     goodPacketsRatio: 0.8
     challengeTime: 30
     errorsPointsToFailure: 1
+    badColorCoef: 0.3
   - creationIntensity: 0.8
     screenCrossingTime: 9
     goodPacketsRatio: 0.5
     challengeTime: 60
     errorsPointsToFailure: 1
+    badColorCoef: 0.3
   - creationIntensity: 1
     screenCrossingTime: 9
     goodPacketsRatio: 0.6
     challengeTime: 60
     errorsPointsToFailure: 1
+    badColorCoef: 0.5
   - creationIntensity: 1
     screenCrossingTime: 8
     goodPacketsRatio: 0.6
     challengeTime: 60
     errorsPointsToFailure: 1
+    badColorCoef: 0.5
   - creationIntensity: 1.2
     screenCrossingTime: 7
     goodPacketsRatio: 0.5
     challengeTime: 60
     errorsPointsToFailure: 1
+    badColorCoef: 0.5
   - creationIntensity: 1.5
     screenCrossingTime: 7
     goodPacketsRatio: 0.67
     challengeTime: 60
     errorsPointsToFailure: 1
+    badColorCoef: 0.7
   - creationIntensity: 1.5
     screenCrossingTime: 6
     goodPacketsRatio: 0.6
     challengeTime: 60
     errorsPointsToFailure: 1
+    badColorCoef: 0.7
   - creationIntensity: 2
     screenCrossingTime: 6
     goodPacketsRatio: 0.5
     challengeTime: 60
     errorsPointsToFailure: 1
+    badColorCoef: 0.7
   - creationIntensity: 2.33
     screenCrossingTime: 5
     goodPacketsRatio: 0.67
     challengeTime: 60
     errorsPointsToFailure: 1.3
+    badColorCoef: 0.9
   levelIndex: 1
+  goodPacketColor: {r: 0.0141509175, g: 0.3895371, b: 1, a: 1}
   field: {fileID: 1955324048}
   helpPanel: {fileID: 2042868637}
-  headerCatalogue: {fileID: 1349005792}
-  goodHeadersText: {fileID: 1805533598}
-  badHeadersText: {fileID: 216989186}
   levelText: {fileID: 1710347833}
   errorWeights:
     dropGood: 0.4

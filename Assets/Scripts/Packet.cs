@@ -27,8 +27,7 @@ public class Packet : MonoBehaviour, IPacket
             fireSign.SetActive(value);
         }
     }
-    public Text HeaderText { get { return _HeaderText; } }
-    public Text BodyText { get { return _BodyText; } }
+    public Text BodyText { get; private set; }
     public bool onTheMove { get { return transition != null; } }
     public Data data
     {
@@ -36,8 +35,8 @@ public class Packet : MonoBehaviour, IPacket
         set
         {
             _data = value;
-            HeaderText.text = _data.header;
             BodyText.text = _data.body;
+            background.color = data.bgcolor;
         }
     }
 
@@ -49,17 +48,17 @@ public class Packet : MonoBehaviour, IPacket
         transition = StartCoroutine(Transition(transform as RectTransform, anchoredPosition, endCallback, ClearTransition));
     }
     Data _data;
-    private Text _HeaderText, _BodyText;
     private Coroutine transition = null;
     private void Start()
     {
         onFire = false;
     }
+    private Image background;
     void Awake()
     {
         Debug.Assert(transform.childCount >= 2, "Packet has two children for text");
-        _HeaderText = transform.GetChild(0).GetComponentInChildren<Text>();
-        _BodyText = transform.GetChild(1).GetComponentInChildren<Text>();
+        BodyText = transform.GetComponentInChildren<Text>();
+        background = transform.GetComponentInChildren<Image>();
     }
 
     public static float maxSpeed = 1f;
@@ -89,14 +88,14 @@ public class Packet : MonoBehaviour, IPacket
     [System.Serializable]
     public struct Data
     {
-        public string header;
         public string body;
+        public Color bgcolor;
         public readonly bool good;
-        public Data(string _header, string _body, bool _good)
+        public Data(string _body, bool _good, Color? _bgcolor=null)
         {
-            header = _header;
             body = _body;
             good = _good;
+            bgcolor = _bgcolor.HasValue ? _bgcolor.Value : new Color(4f, 99f, 255f);
         }
     }
     public enum DeathCause
@@ -105,7 +104,7 @@ public class Packet : MonoBehaviour, IPacket
     }
     public override string ToString()
     {
-        return $"{data.header} {data.body}";
+        return $"={data.body}";
     }
 
 }
