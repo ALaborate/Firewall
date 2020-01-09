@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
 using System.Text;
 using System.Linq;
 using System.IO;
 using System.Runtime.Serialization;
+
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class Croupier : MonoBehaviour
 {
@@ -13,21 +15,22 @@ public class Croupier : MonoBehaviour
     public TextAsset vocabularyFile;
     public GameObject linePrefab;
     public float creationPeriod = 0.05f;
-    public List<DifficultyLevel> levels;
-    public int levelIndex = 0;
+    public DifficultyLevel difficultyLevel;
     public Color goodPacketColor;
+
+    [Header("Events")]
+    public UnityEvent tacticalSuccess;
+    public UnityEvent tacticalFail, noMatchError;
+    public UnityEvent<Packet, Packet.DeathCause> OnPacketDeath;
+
 
     [Header("Typing")]
     public InputField field;
     public GameObject helpPanel;
 
-    [Header("Level challenges")]
-    public Text levelText;
-    public ErrorWeights errorWeights;
-
-    [Header("Sound")]
-    public AudioSource success;
-    public AudioSource fail, levelup, leveldown, collission, challengeStarted, dryShot, victory;
+    //[Header("Sound")]
+    //public AudioSource success;
+    //public AudioSource fail, levelup, leveldown, collission, challengeStarted, dryShot, victory;
 
     [Header("Bufer handling")]
     public float verticalPadding = 0;
@@ -37,39 +40,12 @@ public class Croupier : MonoBehaviour
     Line[] lines;
     private List<string> gWords, bWords;
 
-    System.Runtime.Serialization.Formatters.Binary.BinaryFormatter binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
     static readonly char[] textAssetDelimiters = new char[] { '\n', '\r' };
-    const string levelFilename = "lvl.dat";
     const string vocabularyFileName = "words.txt";
-    private void ReadSettingsFromFiles()
-    {
-
-        if (File.Exists(levelFilename))
-        {
-            using (var str = File.OpenRead(levelFilename))
-            {
-                var data = binaryFormatter.Deserialize(str);
-                levelIndex = (int)data;
-            }
-        }
-
-        if (File.Exists(vocabularyFileName))
-        {
-            ParseTextAsset(new TextAsset(File.ReadAllText(vocabularyFileName)), gWords, bWords);
-        }
-    }
-    private void WriteSettingsToFiles()
-    {
-        if (!File.Exists(vocabularyFileName))
-            File.WriteAllText(vocabularyFileName, vocabularyFile.text);
-        using (var str = File.OpenWrite(levelFilename))
-        {
-            binaryFormatter.Serialize(str, levelIndex);
-        }
-    }
     const char delimiterInVocabulary = ' ';
     private static void ParseTextAsset(TextAsset textAsset, List<string> good, List<string> bad)
     {
+        //TODO ensure many to one types of bounds in text file.
         foreach (var line in textAsset.text.Split(textAssetDelimiters))
         {
             var parts = from l in line.Split(delimiterInVocabulary) where !string.IsNullOrEmpty(l) select l;
@@ -84,8 +60,8 @@ public class Croupier : MonoBehaviour
     {
         gWords = new List<string>();
         bWords = new List<string>();
+        //TODO streaming assets
         ParseTextAsset(vocabularyFile, gWords, bWords);
-        ReadSettingsFromFiles();
 
         rt = transform as RectTransform;
         Debug.Assert(rt != null);
@@ -107,45 +83,36 @@ public class Croupier : MonoBehaviour
             lrt.anchorMin = Vector2.one;
             lrt.anchorMax = Vector2.one;
             lrt.anchoredPosition = new Vector2(-w * 0.5f, -padding - h * 0.5f - h * i);
-            lines[i].OnPacketDeath += OnPacketDeath;
+            lines[i].OnPacketDeath += OnPacketDeathInternal;
         }
         field.Select();
         helpPanel.SetActive(true);//TODO memorize setting to playerprefs
-        longSounds = new AudioSource[] { levelup, leveldown, victory, challengeStarted };
     }
-    private void OnPacketDeath(Packet p, Packet.DeathCause cause)
+    private void OnPacketDeathInternal(Packet p, Packet.DeathCause cause)
     {
         if (cause == Packet.DeathCause.Internal)
             return;
+        OnPacketDeath.Invoke(p, cause);
+
         var data = p.data;
         if (cause == Packet.DeathCause.Drop)
         {
             if (data.good)
             {
-                Decelerate();
-                errorPoints += errorWeights.dropGood;
+                tacticalFail.Invoke();
             }
         }
         else if (cause == Packet.DeathCause.Clear)
         {
             if (data.good)
             {
-                Accelerate();
+                tacticalSuccess.Invoke();
             }
             else //bad
             {
-                errorPoints += errorWeights.clearBad;
-                Decelerate();
+                tacticalFail.Invoke();
             }
         }
-    }
-    private void Accelerate()
-    {
-        success.Play();
-    }
-    private void Decelerate()
-    {
-        fail.Play();
     }
 
     private float nextCreationTime = 0f;
@@ -159,12 +126,12 @@ public class Croupier : MonoBehaviour
             return;
         }
 
-        var probability = levels[levelIndex].creationIntensity * creationPeriod;
+        var probability = difficultyLevel.creationIntensity * creationPeriod;
         nextCreationTime = Time.time + creationPeriod;
         if (Random.value <= probability)
         {
             var lineInx = Mathf.FloorToInt(Random.Range(0f, freeLines.Count - 0.1f));
-            bool goodPacket = Random.value < levels[levelIndex].goodPacketsRatio;
+            bool goodPacket = Random.value < difficultyLevel.goodPacketsRatio;
             var words = gWords;
             var color = goodPacketColor;
             if (!goodPacket)
@@ -172,7 +139,7 @@ public class Croupier : MonoBehaviour
                 words = bWords;
                 for (int i = 0; i < 3; i++)
                 {
-                    color[i] *= levels[levelIndex].badColorCoef;
+                    color[i] *= difficultyLevel.badColorCoef;
                 }
             }
             var wordInx = Mathf.FloorToInt(Random.Range(0f, words.Count));
@@ -180,69 +147,15 @@ public class Croupier : MonoBehaviour
             freeLines[lineInx].CreatePacket(new Packet.Data(w, goodPacket, color));
         }
     }
-    private IEnumerator PlayDecAfterFailure()
-    {
-        while (true)
-        {
-            if (fail.isPlaying)
-                yield return null;
-            else break;
-        }
-        leveldown.Play();
-        yield break;
-    }
-    AudioSource[] longSounds;
-    private void StopLongSounds()
-    {
-        foreach (var item in longSounds)
-        {
-            if (item.isPlaying)
-            {
-                item.Stop();
-            }
-        }
-    }
-    private void DecLevel()
-    {
-        StopLongSounds();
-        if (levelIndex == 0)
-        {
-            collission.Play();
-        }
-        else
-        {
-            levelIndex--;
-            StartCoroutine(PlayDecAfterFailure());
-        }
-        challengeEndTime = -1f;
-    }
 
-    private void UpdateLevelText()
-    {
-        levelText.text = $"Level: {levelIndex}{(challengeEndTime > 0f ? $" challenged. Time left: {Mathf.FloorToInt(challengeEndTime - Time.time):D2}. Errors: {errorPoints:F2}/{levels[levelIndex + 1].errorsPointsToFailure:F2}" : "")}";
-    }
 
-    float challengeEndTime = -1f;
-    float errorPoints = 0;
+
     string last = "";
     float lastMaxSpeed = 1f;
     void Update()
     {
-        if (Packet.maxSpeed != 0f && levels[levelIndex].screenCrossingTime > 0f)
-            Packet.maxSpeed = rt.rect.width / levels[levelIndex].screenCrossingTime;
-        if (challengeEndTime > 0f)
-        {
-            if (errorPoints >= levels[levelIndex + 1].errorsPointsToFailure)
-            {
-                DecLevel();
-            }
-            else if (challengeEndTime <= Time.time)
-            {
-                levelIndex++;
-                levelup.Play();
-                challengeEndTime = -1f;
-            }
-        }
+        if (Packet.maxSpeed != 0f && difficultyLevel.screenCrossingTime > 0f)
+            Packet.maxSpeed = rt.rect.width / difficultyLevel.screenCrossingTime;
 
         CreatePackets();
 
@@ -253,40 +166,20 @@ public class Croupier : MonoBehaviour
             if (!helpPanel.activeSelf)
             {
                 field.Select();
+                ResumeTime();
             }
             else
             {
+                StopTime();
                 UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(null);
             }
         }
 
         if (Packet.maxSpeed != 0f)
         {
-            UpdateLevelText();
             if (Input.GetKey(KeyCode.LeftControl))
             {
-                if (Input.GetKeyDown(KeyCode.Space))
-                {
-                    if (challengeEndTime < 0f)
-                    {
-                        if (levelIndex >= levels.Count - 1)
-                        {
-                            victory.Play();
-                        }
-                        else
-                        {
-                            StopLongSounds();
-                            challengeStarted.Play();
-                            challengeEndTime = Time.time + levels[levelIndex + 1].challengeTime;
-                            errorPoints = 0f;
-                        }
-                    }
-                    else
-                    {
-                        DecLevel();
-                    }
-                }
-                else if (Input.GetKeyDown(KeyCode.Z))
+                if (Input.GetKeyDown(KeyCode.Z))
                 {
                     field.text = last;
                     field.Select();
@@ -294,7 +187,8 @@ public class Croupier : MonoBehaviour
                     field.selectionAnchorPosition = field.caretPosition;
                 }
             }
-            else if (Input.GetKey(KeyCode.LeftAlt))
+
+            if (Input.GetKey(KeyCode.LeftAlt))
             {
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
@@ -321,8 +215,7 @@ public class Croupier : MonoBehaviour
                 }
                 if (occurences == 0)
                 {
-                    errorPoints += errorWeights.dryShot;
-                    dryShot.Play();
+                    noMatchError.Invoke();
                 }
                 field.text = "";
                 field.Select();
@@ -330,53 +223,35 @@ public class Croupier : MonoBehaviour
         }
     }
 
-    private void ResumeTime()
+    public void ResumeTime()
     {
         Packet.maxSpeed = lastMaxSpeed;
         field.Select();
     }
+    //TODO make those public. Add victory method
 
-    private void StopTime()
+    public void StopTime()
     {
         lastMaxSpeed = Packet.maxSpeed;
         Packet.maxSpeed = 0f;
         UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(null);
     }
 
-    private void OnDestroy()
-    {
-        WriteSettingsToFiles();
-    }
     [System.Serializable]
     public struct DifficultyLevel
     {
         public float creationIntensity;
         public float screenCrossingTime;
         public float goodPacketsRatio;
-        public float challengeTime;
         public float errorsPointsToFailure;
         public float badColorCoef;
-        public DifficultyLevel(float _creationIntensity = 2f, float _screeenCrossingTime = 6f, float _goodPacketsRatio = 0.5f, float _errorsToFailure = 1, float _challengeTime = 60f, float _badColorCoef = 0.98f)
+        public DifficultyLevel(float _creationIntensity = 2f, float _screeenCrossingTime = 6f, float _goodPacketsRatio = 0.5f, float _errorsToFailure = 1, float _badColorCoef = 0.98f)
         {
             creationIntensity = _creationIntensity;
             screenCrossingTime = _screeenCrossingTime;
             goodPacketsRatio = _goodPacketsRatio;
             errorsPointsToFailure = _errorsToFailure;
-            challengeTime = _challengeTime;
             badColorCoef = _badColorCoef;
-        }
-    }
-    [System.Serializable]
-    public struct ErrorWeights
-    {
-        public float dropGood;
-        public float clearBad;
-        public float dryShot;
-        public ErrorWeights(float dropGood, float clearBad, float dryShot)
-        {
-            this.dropGood = dropGood;
-            this.clearBad = clearBad;
-            this.dryShot = dryShot;
         }
     }
 }

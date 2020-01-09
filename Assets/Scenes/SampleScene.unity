@@ -3237,90 +3237,24 @@ MonoBehaviour:
   linePrefab: {fileID: 5721813386558704021, guid: 532b0ee70683207449eb1e805d28e4b1,
     type: 3}
   creationPeriod: 0.05
-  levels:
-  - creationIntensity: 0.5
-    screenCrossingTime: 10
-    goodPacketsRatio: 0.4
-    challengeTime: 60
-    errorsPointsToFailure: 1
-    badColorCoef: 0.1
-  - creationIntensity: 0.5
-    screenCrossingTime: 9
-    goodPacketsRatio: 0.5
-    challengeTime: 30
-    errorsPointsToFailure: 1
-    badColorCoef: 0.3
-  - creationIntensity: 0.5
-    screenCrossingTime: 9
-    goodPacketsRatio: 0.8
-    challengeTime: 30
-    errorsPointsToFailure: 1
-    badColorCoef: 0.3
-  - creationIntensity: 0.8
-    screenCrossingTime: 9
-    goodPacketsRatio: 0.5
-    challengeTime: 60
-    errorsPointsToFailure: 1
-    badColorCoef: 0.3
-  - creationIntensity: 1
-    screenCrossingTime: 9
-    goodPacketsRatio: 0.6
-    challengeTime: 60
-    errorsPointsToFailure: 1
-    badColorCoef: 0.5
-  - creationIntensity: 1
-    screenCrossingTime: 8
-    goodPacketsRatio: 0.6
-    challengeTime: 60
-    errorsPointsToFailure: 1
-    badColorCoef: 0.5
-  - creationIntensity: 1.2
-    screenCrossingTime: 7
-    goodPacketsRatio: 0.5
-    challengeTime: 60
-    errorsPointsToFailure: 1
-    badColorCoef: 0.5
-  - creationIntensity: 1.5
-    screenCrossingTime: 7
-    goodPacketsRatio: 0.67
-    challengeTime: 60
-    errorsPointsToFailure: 1
-    badColorCoef: 0.7
-  - creationIntensity: 1.5
-    screenCrossingTime: 6
-    goodPacketsRatio: 0.6
-    challengeTime: 60
-    errorsPointsToFailure: 1
-    badColorCoef: 0.7
-  - creationIntensity: 2
-    screenCrossingTime: 6
-    goodPacketsRatio: 0.5
-    challengeTime: 60
-    errorsPointsToFailure: 1
-    badColorCoef: 0.7
-  - creationIntensity: 2.33
-    screenCrossingTime: 5
-    goodPacketsRatio: 0.67
-    challengeTime: 60
-    errorsPointsToFailure: 1.3
-    badColorCoef: 0.9
-  levelIndex: 1
+  difficultyLevel:
+    creationIntensity: 0
+    screenCrossingTime: 0
+    goodPacketsRatio: 0
+    errorsPointsToFailure: 0
+    badColorCoef: 0
   goodPacketColor: {r: 0.0141509175, g: 0.3895371, b: 1, a: 1}
+  tacticalSuccess:
+    m_PersistentCalls:
+      m_Calls: []
+  tacticalFail:
+    m_PersistentCalls:
+      m_Calls: []
+  noMatchError:
+    m_PersistentCalls:
+      m_Calls: []
   field: {fileID: 1955324048}
   helpPanel: {fileID: 2042868637}
-  levelText: {fileID: 1710347833}
-  errorWeights:
-    dropGood: 0.4
-    clearBad: 0.4
-    dryShot: 0.5
-  success: {fileID: 845750092}
-  fail: {fileID: 189492724}
-  levelup: {fileID: 1315101596}
-  leveldown: {fileID: 1041269063}
-  collission: {fileID: 139211159}
-  challengeStarted: {fileID: 640326388}
-  dryShot: {fileID: 1158562684}
-  victory: {fileID: 1951241991}
   verticalPadding: 0
   relativeVerticalPadding: 0.03
 --- !u!1 &1532622505
